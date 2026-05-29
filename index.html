@@ -6,7 +6,7 @@
     <title>Generator Laporan Kegiatan SDN Senden 2</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@3"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght text-slate-400;500;600;700&display=swap');
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: #f8fafc !important; 
@@ -25,8 +25,8 @@
         
         <div class="lg:col-span-5 bg-custom-card p-6 rounded-2xl shadow-sm border border-[1px] border-slate-100 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
             <div>
-                <h2 class="text-xl font-bold text-slate-900">Pembuat Laporan Foto Besar</h2>
-                <p class="text-xs text-slate-500 mt-1">Nama kegiatan di atas foto, ukuran foto menjadi lebih besar dan proporsional.</p>
+                <h2 class="text-xl font-bold text-slate-900">Pembuat Laporan Proporsional</h2>
+                <p class="text-xs text-slate-500 mt-1">Nama kegiatan di atas, ukuran foto pas (tidak kebesaran/kekecilan).</p>
             </div>
             <hr class="border-slate-100">
 
@@ -65,11 +65,11 @@
         <div class="lg:col-span-7 flex flex-col items-center justify-start">
             <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 self-start lg:self-center">Pratinjau Hasil Laporan</span>
             
-            <div id="templateLaporan" style="background-color: #ffffff !important;" class="w-[480px] p-6 shadow-xl border border-slate-200 flex flex-col justify-between relative overflow-hidden select-none">
+            <div id="templateLaporan" style="background-color: #ffffff !important;" class="w-[480px] h-[660px] p-6 shadow-xl border border-slate-200 flex flex-col justify-between relative overflow-hidden select-none">
                 
                 <div class="absolute top-0 left-0 right-0 h-1.5 bg-custom-blue"></div>
 
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-2">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 bg-custom-light-blue rounded-lg flex items-center justify-center border border-custom-blue text-custom-blue font-bold text-[10px]">
                             SDN
@@ -84,10 +84,10 @@
                     </div>
                 </div>
 
-                <div id="viewKegiatanList" class="flex flex-col gap-6 my-2">
+                <div id="viewKegiatanList" class="flex-grow flex flex-col justify-start gap-3 overflow-hidden my-1">
                     </div>
 
-                <div class="border-t border-slate-100 pt-3 mt-5 flex justify-between items-center text-[9px] text-slate-400">
+                <div class="border-t border-slate-100 pt-2 flex justify-between items-center text-[9px] text-slate-400">
                     <div>*Digenerate instan via Sistem Dokumentasi Sekolah</div>
                     <div class="font-medium text-slate-600">Petugas: <span id="viewPetugas" class="font-bold text-slate-700">Tim Dokumentasi</span></div>
                 </div>
@@ -97,7 +97,8 @@
 
     </div>
 
-    <script>
+    <script {
+    }>
         let jumlahKegiatanAktif = 1;
         const dataDefault = [
             { nama: "Pendampingan TKA Kelas VI", desc: "Pendampingan persiapan ujian.", foto: "" },
@@ -113,7 +114,6 @@
         const formContainer = document.getElementById('formKegiatanContainer');
         const viewContainer = document.getElementById('viewKegiatanList');
         const btnDownload = document.getElementById('btnDownload');
-        const templateLaporan = document.getElementById('templateLaporan');
 
         const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
@@ -148,16 +148,15 @@
             formContainer.innerHTML = '';
             viewContainer.innerHTML = '';
 
-            // Mengatur tinggi kanvas poster secara adaptif agar rasio foto tetap besar & pas
-            if (jumlahKegiatanAktif === 1) templateLaporan.style.height = "560px";
-            if (jumlahKegiatanAktif === 2) templateLaporan.style.height = "820px";
-            if (jumlahKegiatanAktif === 3) templateLaporan.style.height = "1120px";
-            if (jumlahKegiatanAktif === 4) templateLaporan.style.height = "1420px";
+            // Pengaturan ukuran box foto agar fleksibel mengikuti jumlah kegiatan
+            let fotoSizeClass = "w-32 h-24"; // Ukuran default ideal untuk 3-4 kegiatan
+            if (jumlahKegiatanAktif === 1) fotoSizeClass = "w-full h-64"; // Kalau cuma 1 kegiatan, fotonya dibuat megah
+            if (jumlahKegiatanAktif === 2) fotoSizeClass = "w-full h-40"; // Kalau 2 kegiatan, ukuran sedang lebar
 
             for (let i = 1; i <= jumlahKegiatanAktif; i++) {
                 const def = dataDefault[i-1];
 
-                // 1. INPUT FORM
+                // 1. GENERATE FORM INPUT
                 const formGroup = document.createElement('div');
                 formGroup.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col gap-2";
                 formGroup.innerHTML = `
@@ -177,23 +176,40 @@
                 `;
                 formContainer.appendChild(formGroup);
 
-                // 2. PREVIEW POSTER VERTIKAL (NAMA DI ATAS -> FOTO BESAR DI TENGAH -> DESC DI BAWAH)
+                // 2. GENERATE PREVIEW (NAMA DI ATAS, FOTO + DESC DI BAWAHNYA)
                 const viewRow = document.createElement('div');
-                viewRow.className = "flex flex-col gap-2 border-b border-slate-100 pb-4 last:border-0 last:pb-0";
-                viewRow.innerHTML = `
-                    <div>
-                        <h3 id="pv-nama-${i}" class="text-xs font-bold text-slate-800 leading-tight">${def.nama}</h3>
-                    </div>
-                    
-                    <div id="pv-box-foto-${i}" style="background-color: #f1f5f9 !important;" class="w-full h-52 rounded-xl border border-slate-200 flex flex-col items-center justify-center text-slate-300 overflow-hidden flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                        <span class="text-[8px] mt-1 font-medium">Belum Ada Foto Kegiatan</span>
-                    </div>
-
-                    <div>
-                        <p id="pv-desc-${i}" class="text-[10px] text-slate-500 leading-relaxed text-justify">${def.desc}</p>
-                    </div>
-                `;
+                viewRow.className = "flex flex-col gap-1 border-b border-slate-100/80 pb-2 last:border-0 last:pb-0";
+                
+                // Kondisi layout untuk 3 & 4 kegiatan: foto di kiri, deskripsi di kanan agar hemat tempat
+                if (jumlahKegiatanAktif >= 3) {
+                    viewRow.innerHTML = `
+                        <div>
+                            <h3 id="pv-nama-${i}" class="text-xs font-bold text-slate-800 leading-tight">${def.nama}</h3>
+                        </div>
+                        <div class="flex gap-3 items-start mt-0.5">
+                            <div id="pv-box-foto-${i}" style="background-color: #f1f5f9 !important;" class="${fotoSizeClass} rounded-lg border border-slate-200 flex flex-col items-center justify-center text-slate-300 overflow-hidden flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <p id="pv-desc-${i}" class="text-[10px] text-slate-500 leading-relaxed text-justify line-clamp-3">${def.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Kondisi layout untuk 1 & 2 kegiatan (Foto besar vertikal penuh)
+                    viewRow.innerHTML = `
+                        <div>
+                            <h3 id="pv-nama-${i}" class="text-xs font-bold text-slate-800 leading-tight mb-1">${def.nama}</h3>
+                        </div>
+                        <div id="pv-box-foto-${i}" style="background-color: #f1f5f9 !important;" class="${fotoSizeClass} rounded-xl border border-slate-200 flex flex-col items-center justify-center text-slate-300 overflow-hidden flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        </div>
+                        <div class="mt-1">
+                            <p id="pv-desc-${i}" class="text-[10px] text-slate-500 leading-relaxed text-justify">${def.desc}</p>
+                        </div>
+                    `;
+                }
+                
                 viewContainer.appendChild(viewRow);
 
                 const inNama = document.getElementById(`keg-nama-${i}`);
@@ -242,7 +258,6 @@
 
         renderFormDanPreview();
 
-        // Engine download resolusi tinggi
         btnDownload.addEventListener('click', function() {
             const target = document.getElementById('templateLaporan');
             const textAwal = btnDownload.innerHTML;
@@ -269,12 +284,3 @@
                 
                 btnDownload.innerHTML = textAwal;
                 btnDownload.disabled = false;
-            }).catch(err => {
-                alert("Gagal memproses gambar: " + err);
-                btnDownload.innerHTML = textAwal;
-                btnDownload.disabled = false;
-            });
-        });
-    </script>
-</body>
-</html>
