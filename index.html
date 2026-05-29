@@ -3,103 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Laporan Kegiatan SDN Senden 2</title>
+    <title>Generator Laporan Multi-Kegiatan SDN Senden 2</title>
+    <!-- Menggunakan Tailwind CSS untuk UI Modern -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Library untuk konversi HTML ke Gambar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* Font Google-style */
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4">
+        <!-- KOLOM KIRI: FORM INPUT -->
+        <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
             <div>
-                <h2 class="text-xl font-bold text-slate-900">Pembuat Laporan Instan</h2>
-                <p class="text-xs text-slate-500 mt-1">Isi formulir untuk memperbarui pratinjau secara otomatis.</p>
+                <h2 class="text-xl font-bold text-slate-900">Pembuat Laporan Multi-Kegiatan</h2>
+                <p class="text-xs text-slate-500 mt-1">Sesuaikan jumlah kegiatan dan isi data laporan di bawah ini.</p>
             </div>
             <hr class="border-slate-100">
 
-            <div>
-                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Tanggal Kegiatan</label>
-                <input type="date" id="inputTanggal" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            <!-- Pengaturan Umum -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Tanggal</label>
+                    <input type="date" id="inputTanggal" class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Nama Petugas</label>
+                    <input type="text" id="inputPetugas" placeholder="Nama Guru/Staf" value="Tim Dokumentasi" class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                </div>
             </div>
 
+            <!-- Pilihan Jumlah Kegiatan -->
             <div>
-                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nama Kegiatan</label>
-                <input type="text" id="inputNama" placeholder="Contoh: Pendampingan TKA Kelas VI" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Jumlah Kegiatan dalam 1 Laporan</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button type="button" onclick="setJumlahKegiatan(1)" id="btnSet-1" class="py-2 text-sm font-semibold rounded-lg border bg-blue-600 text-white border-blue-600">1</button>
+                    <button type="button" onclick="setJumlahKegiatan(2)" id="btnSet-2" class="py-2 text-sm font-semibold rounded-lg border bg-white text-slate-600 border-slate-200 hover:bg-slate-50">2</button>
+                    <button type="button" onclick="setJumlahKegiatan(3)" id="btnSet-3" class="py-2 text-sm font-semibold rounded-lg border bg-white text-slate-600 border-slate-200 hover:bg-slate-50">3</button>
+                    <button type="button" onclick="setJumlahKegiatan(4)" id="btnSet-4" class="py-2 text-sm font-semibold rounded-lg border bg-white text-slate-600 border-slate-200 hover:bg-slate-50">4</button>
+                </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Deskripsi Kegiatan</label>
-                <textarea id="inputDeskripsi" rows="4" placeholder="Tuliskan detail singkat pelaksanaan kegiatan..." class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"></textarea>
+            <hr class="border-slate-100">
+
+            <!-- Container Form Kegiatan Dinamis -->
+            <div id="formKegiatanContainer" class="flex flex-col gap-4">
+                <!-- Diisi via JavaScript -->
             </div>
 
-            <div>
-                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Unggah Foto (Maks. 4 Foto)</label>
-                <input type="file" id="inputFoto" accept="image/*" multiple class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
-                <p class="text-[10px] text-slate-400 mt-1">*Pilih sekaligus beberapa foto saat memilih file.</p>
-            </div>
-
-            <button id="btnDownload" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-sm shadow-blue-200 flex justify-center items-center gap-2">
+            <!-- Tombol Cetak -->
+            <button id="btnDownload" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-sm shadow-blue-200 flex justify-center items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                 Unduh Laporan (JPG)
             </button>
         </div>
 
-        <div class="lg:col-span-7 flex flex-col items-center">
-            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 self-start lg:self-center">Pratinjau Hasil (Poster Canva Style)</span>
+        <!-- KOLOM KANAN: PREVIEW TEMPLATE -->
+        <div class="lg:col-span-7 flex flex-col items-center justify-start">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 self-start lg:self-center">Pratinjau Hasil Laporan</span>
             
-            <div id="templateLaporan" class="w-[480px] h-[600px] bg-white p-8 shadow-xl border border-slate-200 flex flex-col justify-between relative overflow-hidden select-none">
+            <!-- Area Render Gambar (Rasio Poster Tetap Rapi & Profesional) -->
+            <div id="templateLaporan" class="w-[480px] h-[640px] bg-white p-6 shadow-xl border border-slate-200 flex flex-col justify-between relative overflow-hidden select-none">
                 
-                <div class="absolute top-0 left-0 right-0 h-2 bg-blue-600"></div>
+                <!-- Garis Aksen Sekolah Atas -->
+                <div class="absolute top-0 left-0 right-0 h-1.5 bg-blue-600"></div>
 
-                <div class="flex items-center justify-between mt-2">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 text-blue-600 font-bold text-xs">
+                <!-- Header -->
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center border border-blue-100 text-blue-600 font-bold text-[10px]">
                             SDN
                         </div>
                         <div>
-                            <h1 class="text-sm font-bold text-slate-900 tracking-tight">SD NEGERI SENDEN 2</h1>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Laporan Dokumentasi Internal</p>
+                            <h1 class="text-xs font-bold text-slate-900 tracking-tight">SD NEGERI SENDEN 2</h1>
+                            <p class="text-[8px] text-slate-400 uppercase tracking-wider font-semibold">Dokumentasi Kegiatan Harian</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span id="viewTanggal" class="inline-block bg-slate-100 text-slate-700 text-[10px] font-semibold px-2.5 py-1 rounded-full">30 Mei 2026</span>
+                        <span id="viewTanggal" class="inline-block bg-slate-100 text-slate-700 text-[9px] font-semibold px-2.5 py-0.5 rounded-full">30 Mei 2026</span>
                     </div>
                 </div>
 
-                <div class="my-3">
-                    <span class="text-[9px] font-bold text-blue-600 uppercase tracking-widest block mb-0.5">Nama Kegiatan</span>
-                    <h2 id="viewNama" class="text-lg font-bold text-slate-800 leading-tight">Pendampingan TKA Kelas VI</h2>
+                <!-- KONTEN DAFTAR KEGIATAN DINAMIS -->
+                <div id="viewKegiatanList" class="flex-grow flex flex-col justify-center gap-3 my-3 overflow-hidden">
+                    <!-- Diisi otomatis oleh JavaScript -->
                 </div>
 
-                <div id="viewFotoContainer" class="grid grid-cols-2 gap-2 my-2 flex-grow max-h-[260px] overflow-hidden">
-                    <div class="col-span-2 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-300 gap-1 bg-slate-50 min-h-[180px]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                        <span class="text-xs font-medium">Belum ada foto terpilih</span>
-                    </div>
-                </div>
-
-                <div class="my-3">
-                    <span class="text-[9px] font-bold text-blue-600 uppercase tracking-widest block mb-1">Deskripsi Ringkas</span>
-                    <p id="viewDeskripsi" class="text-xs text-slate-600 leading-relaxed text-justify line-clamp-4">
-                        Pendampingan dan pembinaan peserta didik kelas VI dalam persiapan Tes Kemampuan Akademik (TKA) agar berjalan lancar dan optimal.
-                    </p>
-                </div>
-
-                <div class="border-t border-slate-100 pt-3 flex justify-between items-end mt-auto">
-                    <div class="text-[9px] text-slate-400">
-                        *Digenerate otomatis secara instan via Sistem Laporan Internal
-                    </div>
-                    <div class="text-center min-w-[100px]">
-                        <p class="text-[9px] text-slate-400 mb-8">Petugas Pelaksana,</p>
-                        <div class="w-16 h-[1px] bg-slate-300 mx-auto mb-1"></div>
-                        <p class="text-[10px] font-semibold text-slate-700">Tim Dokumentasi</p>
-                    </div>
+                <!-- Footer Sederhana (Tanpa TTD) -->
+                <div class="border-t border-slate-100 pt-2.5 flex justify-between items-center text-[9px] text-slate-400">
+                    <div>*Digenerate instan via Sistem Dokumentasi Sekolah</div>
+                    <div class="font-medium text-slate-600">Petugas: <span id="viewPetugas" class="font-bold">Tim Dokumentasi</span></div>
                 </div>
 
             </div>
@@ -108,34 +105,32 @@
     </div>
 
     <script>
-        // Elemen Input
-        const inputTanggal = document.getElementById('inputTanggal');
-        const inputNama = document.getElementById('inputNama');
-        const inputDeskripsi = document.getElementById('inputDeskripsi');
-        const inputFoto = document.getElementById('inputFoto');
+        let jumlahKegiatanAktif = 1;
+        const dataDefault = [
+            { nama: "Pendampingan TKA Kelas VI", desc: "Pendampingan persiapan ujian.", foto: "" },
+            { nama: "Rapat Koordinasi Guru", desc: "Membahas evaluasi mingguan sekolah.", foto: "" },
+            { nama: "Kerja Bakti Lingkungan Sekolah", desc: "", foto: "" },
+            { nama: "Penyusunan Laporan BOS", desc: "", foto: "" }
+        ];
 
-        // Elemen Preview
+        const inputTanggal = document.getElementById('inputTanggal');
+        const inputPetugas = document.getElementById('inputPetugas');
         const viewTanggal = document.getElementById('viewTanggal');
-        const viewNama = document.getElementById('viewNama');
-        const viewDeskripsi = document.getElementById('viewDeskripsi');
-        const viewFotoContainer = document.getElementById('viewFotoContainer');
+        const viewPetugas = document.getElementById('viewPetugas');
+        const formContainer = document.getElementById('formKegiatanContainer');
+        const viewContainer = document.getElementById('viewKegiatanList');
         const btnDownload = document.getElementById('btnDownload');
 
-        // Set default tanggal hari ini saat dibuka
+        // Set default tanggal & petugas
         const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
 
-        // Event Listener untuk update teks secara real-time
         inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
-        inputNama.addEventListener('input', (e) => {
-            viewNama.innerText = e.target.value.trim() || "Pendampingan TKA Kelas VI";
-        });
-        inputDeskripsi.addEventListener('input', (e) => {
-            viewDeskripsi.innerText = e.target.value.trim() || "Pendampingan dan pembinaan peserta didik kelas VI dalam persiapan TKA.";
+        inputPetugas.addEventListener('input', (e) => {
+            viewPetugas.innerText = e.target.value.trim() || "-";
         });
 
-        // Format Tanggal Indonesia (Contoh: 30 Mei 2026)
         function formatDanSetTanggal(dateString) {
             if(!dateString) return;
             const opsi = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -143,65 +138,159 @@
             viewTanggal.innerText = date.toLocaleDateString('id-ID', opsi);
         }
 
-        // Handle Upload & Render Foto Dinamis
-        inputFoto.addEventListener('change', function(e) {
-            const files = Array.from(e.target.files).slice(0, 4); // Batasi maks 4
-            viewFotoContainer.innerHTML = ''; // Reset container
-
-            if(files.length === 0) {
-                viewFotoContainer.innerHTML = `
-                    <div class="col-span-2 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-300 gap-1 bg-slate-50 min-h-[180px]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                        <span class="text-xs font-medium">Belum ada foto terpilih</span>
-                    </div>`;
-                return;
-            }
-
-            // Atur layout grid berdasarkan jumlah foto agar seimbang
-            if (files.length === 1) {
-                viewFotoContainer.classList.remove('grid-cols-2');
-                viewFotoContainer.classList.add('grid-cols-1');
-            } else {
-                viewFotoContainer.classList.remove('grid-cols-1');
-                viewFotoContainer.classList.add('grid-cols-2');
-            }
-
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const imgDiv = document.createElement('div');
-                    imgDiv.className = "w-full h-full min-h-[120px] max-h-[240px] rounded-xl overflow-hidden bg-slate-100 border border-slate-100 shadow-sm";
-                    
-                    const img = document.createElement('img');
-                    img.src = event.target.result;
-                    img.className = "w-full h-full object-cover";
-                    
-                    imgDiv.appendChild(img);
-                    viewFotoContainer.appendChild(imgDiv);
+        // Fungsi mengubah jumlah slot kegiatan
+        function setJumlahKegiatan(jumlah) {
+            jumlahKegiatanAktif = jumlah;
+            for(let i=1; i<=4; i++) {
+                const btn = document.getElementById(`btnSet-${i}`);
+                if(i === jumlah) {
+                    btn.className = "py-2 text-sm font-semibold rounded-lg border bg-blue-600 text-white border-blue-600";
+                } else {
+                    btn.className = "py-2 text-sm font-semibold rounded-lg border bg-white text-slate-600 border-slate-200 hover:bg-slate-50";
                 }
-                reader.readAsDataURL(file);
-            });
-        });
+            }
+            renderFormDanPreview();
+        }
 
-        // Proses download ke JPG menggunakan html2canvas
+        // Generator UI Form Input & Preview secara sinkron
+        function renderFormDanPreview() {
+            formContainer.innerHTML = '';
+            viewContainer.innerHTML = '';
+
+            // Tentukan tinggi layout item preview berdasarkan isi agar pas di kertas poster
+            let rowHeightClass = "h-full";
+            if (jumlahKegiatanAktif == 2) rowHeightClass = "h-[47%]";
+            if (jumlahKegiatanAktif >= 3) rowHeightClass = "flex-1 min-h-0";
+
+            for (let i = 1; i <= jumlahKegiatanAktif; i++) {
+                const def = dataDefault[i-1];
+
+                // 1. BUAT FORM INPUT
+                const formGroup = document.createElement('div');
+                formGroup.className = "p-4 bg-slate-50 rounded-xl border border-slate-200/60 flex flex-col gap-2";
+                formGroup.innerHTML = `
+                    <span class="text-xs font-bold text-blue-600">KEGIATAN #${i}</span>
+                    <div>
+                        <label class="block text-[10px] font-medium text-slate-500 mb-0.5">Nama Kegiatan</label>
+                        <input type="text" id="keg-nama-${i}" placeholder="Masukkan nama kegiatan" value="${def.nama}" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-slate-500 mb-0.5">Deskripsi (Opsional)</label>
+                        <input type="text" id="keg-desc-${i}" placeholder="Kosongkan jika tidak ada detail" value="${def.desc}" class="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-slate-500 mb-0.5">Foto Kegiatan</label>
+                        <input type="file" id="keg-foto-${i}" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                    </div>
+                `;
+                formContainer.appendChild(formGroup);
+
+                // 2. BUAT BARIS PREVIEW POSTER
+                const viewRow = document.createElement('div');
+                viewRow.className = `flex gap-3 border-b border-slate-100/70 pb-2 last:border-0 last:pb-0 items-center ${rowHeightClass}`;
+                viewRow.innerHTML = `
+                    <!-- Box Foto Kiri -->
+                    <div id="pv-box-foto-${i}" class="w-28 h-20 bg-slate-100 rounded-lg border border-slate-200/60 flex flex-col items-center justify-center text-slate-300 overflow-hidden flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <span class="text-[8px] mt-0.5 font-medium">No Image</span>
+                    </div>
+                    <!-- Box Teks Kanan -->
+                    <div class="flex-grow min-w-0">
+                        <h3 id="pv-nama-${i}" class="text-xs font-bold text-slate-800 leading-tight block truncate-2-lines">${def.nama}</h3>
+                        <p id="pv-desc-${i}" class="text-[10px] text-slate-500 leading-normal mt-0.5 line-clamp-2">${def.desc}</p>
+                    </div>
+                `;
+                viewContainer.appendChild(viewRow);
+
+                // 3. ATUR EVENT LISTENERS SINKRONISASI REALTIME
+                const inNama = document.getElementById(`keg-nama-${i}`);
+                const inDesc = document.getElementById(`keg-desc-${i}`);
+                const inFoto = document.getElementById(`keg-foto-${i}`);
+                
+                const pvNama = document.getElementById(`pv-nama-${i}`);
+                const pvDesc = document.getElementById(`pv-desc-${i}`);
+                const pvBoxFoto = document.getElementById(`pv-box-foto-${i}`);
+
+                // Inisialisasi awal kondisi deskripsi opsional
+                if(!def.desc) pvDesc.style.display = 'none';
+
+                inNama.addEventListener('input', (e) => {
+                    pvNama.innerText = e.target.value.trim() || `Kegiatan ${i}`;
+                    dataDefault[i-1].nama = e.target.value;
+                });
+
+                inDesc.addEventListener('input', (e) => {
+                    const txt = e.target.value.trim();
+                    dataDefault[i-1].desc = e.target.value;
+                    if(txt === "") {
+                        pvDesc.style.display = 'none';
+                    } else {
+                        pvDesc.style.display = 'block';
+                        pvDesc.innerText = txt;
+                    }
+                });
+
+                inFoto.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            pvBoxFoto.innerHTML = `<img src="${event.target.result}" class="w-full h-full object-cover">`;
+                            dataDefault[i-1].foto = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                // Jaga state gambar lama tetap ada jika diubah jumlah kegiatannya
+                if(def.foto) {
+                    pvBoxFoto.innerHTML = `<img src="${def.foto}" class="w-full h-full object-cover">`;
+                }
+            }
+        }
+
+        // Eksekusi render pertama kali saat dibuka
+        renderFormDanPreview();
+
+        // Alur Download JPG yang diperbaiki & Diperkuat anti-gagal
         btnDownload.addEventListener('click', function() {
             const target = document.getElementById('templateLaporan');
             
-            // Konfigurasi resolusi tinggi agar teks tidak pecah (scale: 2)
+            // Tampilkan animasi/ganti teks tombol saat proses pemrosesan gambar
+            const textAwal = btnDownload.innerHTML;
+            btnDownload.innerHTML = "Memproses Gambar...";
+            btnDownload.disabled = true;
+
             html2canvas(target, {
-                scale: 2, 
+                scale: 2.5, // Menaikkan ketajaman teks/gambar poster (Sangat HD)
                 useCORS: true,
-                logging: false,
-                backgroundColor: "#ffffff"
+                allowTaint: false,
+                backgroundColor: "#ffffff",
+                logging: false
             }).then(canvas => {
-                const image = canvas.toDataURL('image/jpeg', 0.9);
-                const link = document.createElement('a');
+                try {
+                    const image = canvas.toDataURL('image/jpeg', 0.95);
+                    const link = document.createElement('a');
+                    
+                    const tglFile = inputTanggal.value || 'laporan';
+                    link.download = `laporan-harian-${tglFile}.jpg`;
+                    link.href = image;
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (err) {
+                    alert("Akses gambar dibatasi oleh browser Anda. Gunakan file foto asli langsung dari memori internal.");
+                    console.error(err);
+                }
                 
-                // Atur nama file output (contoh: laporan-2026-05-30.jpg)
-                const tglFile = inputTanggal.value || 'laporan';
-                link.download = `laporan-${tglFile}.jpg`;
-                link.href = image;
-                link.click();
+                // Kembalikan status tombol
+                btnDownload.innerHTML = textAwal;
+                btnDownload.disabled = false;
+            }).catch(err => {
+                alert("Gagal memproses gambar laporan: " + err);
+                btnDownload.innerHTML = textAwal;
+                btnDownload.disabled = false;
             });
         });
     </script>
