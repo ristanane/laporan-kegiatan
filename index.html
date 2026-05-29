@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Laporan Kegiatan SDN Senden 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Font Google-style */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Pembuat Laporan Instan</h2>
+                <p class="text-xs text-slate-500 mt-1">Isi formulir untuk memperbarui pratinjau secara otomatis.</p>
+            </div>
+            <hr class="border-slate-100">
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Tanggal Kegiatan</label>
+                <input type="date" id="inputTanggal" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Nama Kegiatan</label>
+                <input type="text" id="inputNama" placeholder="Contoh: Pendampingan TKA Kelas VI" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Deskripsi Kegiatan</label>
+                <textarea id="inputDeskripsi" rows="4" placeholder="Tuliskan detail singkat pelaksanaan kegiatan..." class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Unggah Foto (Maks. 4 Foto)</label>
+                <input type="file" id="inputFoto" accept="image/*" multiple class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                <p class="text-[10px] text-slate-400 mt-1">*Pilih sekaligus beberapa foto saat memilih file.</p>
+            </div>
+
+            <button id="btnDownload" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-sm shadow-blue-200 flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                Unduh Laporan (JPG)
+            </button>
+        </div>
+
+        <div class="lg:col-span-7 flex flex-col items-center">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 self-start lg:self-center">Pratinjau Hasil (Poster Canva Style)</span>
+            
+            <div id="templateLaporan" class="w-[480px] h-[600px] bg-white p-8 shadow-xl border border-slate-200 flex flex-col justify-between relative overflow-hidden select-none">
+                
+                <div class="absolute top-0 left-0 right-0 h-2 bg-blue-600"></div>
+
+                <div class="flex items-center justify-between mt-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 text-blue-600 font-bold text-xs">
+                            SDN
+                        </div>
+                        <div>
+                            <h1 class="text-sm font-bold text-slate-900 tracking-tight">SD NEGERI SENDEN 2</h1>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Laporan Dokumentasi Internal</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span id="viewTanggal" class="inline-block bg-slate-100 text-slate-700 text-[10px] font-semibold px-2.5 py-1 rounded-full">30 Mei 2026</span>
+                    </div>
+                </div>
+
+                <div class="my-3">
+                    <span class="text-[9px] font-bold text-blue-600 uppercase tracking-widest block mb-0.5">Nama Kegiatan</span>
+                    <h2 id="viewNama" class="text-lg font-bold text-slate-800 leading-tight">Pendampingan TKA Kelas VI</h2>
+                </div>
+
+                <div id="viewFotoContainer" class="grid grid-cols-2 gap-2 my-2 flex-grow max-h-[260px] overflow-hidden">
+                    <div class="col-span-2 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-300 gap-1 bg-slate-50 min-h-[180px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <span class="text-xs font-medium">Belum ada foto terpilih</span>
+                    </div>
+                </div>
+
+                <div class="my-3">
+                    <span class="text-[9px] font-bold text-blue-600 uppercase tracking-widest block mb-1">Deskripsi Ringkas</span>
+                    <p id="viewDeskripsi" class="text-xs text-slate-600 leading-relaxed text-justify line-clamp-4">
+                        Pendampingan dan pembinaan peserta didik kelas VI dalam persiapan Tes Kemampuan Akademik (TKA) agar berjalan lancar dan optimal.
+                    </p>
+                </div>
+
+                <div class="border-t border-slate-100 pt-3 flex justify-between items-end mt-auto">
+                    <div class="text-[9px] text-slate-400">
+                        *Digenerate otomatis secara instan via Sistem Laporan Internal
+                    </div>
+                    <div class="text-center min-w-[100px]">
+                        <p class="text-[9px] text-slate-400 mb-8">Petugas Pelaksana,</p>
+                        <div class="w-16 h-[1px] bg-slate-300 mx-auto mb-1"></div>
+                        <p class="text-[10px] font-semibold text-slate-700">Tim Dokumentasi</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Elemen Input
+        const inputTanggal = document.getElementById('inputTanggal');
+        const inputNama = document.getElementById('inputNama');
+        const inputDeskripsi = document.getElementById('inputDeskripsi');
+        const inputFoto = document.getElementById('inputFoto');
+
+        // Elemen Preview
+        const viewTanggal = document.getElementById('viewTanggal');
+        const viewNama = document.getElementById('viewNama');
+        const viewDeskripsi = document.getElementById('viewDeskripsi');
+        const viewFotoContainer = document.getElementById('viewFotoContainer');
+        const btnDownload = document.getElementById('btnDownload');
+
+        // Set default tanggal hari ini saat dibuka
+        const hariIni = new Date().toISOString().split('T')[0];
+        inputTanggal.value = hariIni;
+        formatDanSetTanggal(hariIni);
+
+        // Event Listener untuk update teks secara real-time
+        inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
+        inputNama.addEventListener('input', (e) => {
+            viewNama.innerText = e.target.value.trim() || "Pendampingan TKA Kelas VI";
+        });
+        inputDeskripsi.addEventListener('input', (e) => {
+            viewDeskripsi.innerText = e.target.value.trim() || "Pendampingan dan pembinaan peserta didik kelas VI dalam persiapan TKA.";
+        });
+
+        // Format Tanggal Indonesia (Contoh: 30 Mei 2026)
+        function formatDanSetTanggal(dateString) {
+            if(!dateString) return;
+            const opsi = { day: 'numeric', month: 'long', year: 'numeric' };
+            const date = new Date(dateString);
+            viewTanggal.innerText = date.toLocaleDateString('id-ID', opsi);
+        }
+
+        // Handle Upload & Render Foto Dinamis
+        inputFoto.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files).slice(0, 4); // Batasi maks 4
+            viewFotoContainer.innerHTML = ''; // Reset container
+
+            if(files.length === 0) {
+                viewFotoContainer.innerHTML = `
+                    <div class="col-span-2 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-300 gap-1 bg-slate-50 min-h-[180px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <span class="text-xs font-medium">Belum ada foto terpilih</span>
+                    </div>`;
+                return;
+            }
+
+            // Atur layout grid berdasarkan jumlah foto agar seimbang
+            if (files.length === 1) {
+                viewFotoContainer.classList.remove('grid-cols-2');
+                viewFotoContainer.classList.add('grid-cols-1');
+            } else {
+                viewFotoContainer.classList.remove('grid-cols-1');
+                viewFotoContainer.classList.add('grid-cols-2');
+            }
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = "w-full h-full min-h-[120px] max-h-[240px] rounded-xl overflow-hidden bg-slate-100 border border-slate-100 shadow-sm";
+                    
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.className = "w-full h-full object-cover";
+                    
+                    imgDiv.appendChild(img);
+                    viewFotoContainer.appendChild(imgDiv);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Proses download ke JPG menggunakan html2canvas
+        btnDownload.addEventListener('click', function() {
+            const target = document.getElementById('templateLaporan');
+            
+            // Konfigurasi resolusi tinggi agar teks tidak pecah (scale: 2)
+            html2canvas(target, {
+                scale: 2, 
+                useCORS: true,
+                logging: false,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const image = canvas.toDataURL('image/jpeg', 0.9);
+                const link = document.createElement('a');
+                
+                // Atur nama file output (contoh: laporan-2026-05-30.jpg)
+                const tglFile = inputTanggal.value || 'laporan';
+                link.download = `laporan-${tglFile}.jpg`;
+                link.href = image;
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html>
