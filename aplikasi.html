@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium - Generator Laporan SDN Senden 2</title>
+    <title>Aplikasi Laporan Kegiatan Harian</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -35,18 +35,12 @@
         .grup-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
         .label-style { font-size: 10px; font-weight: 700; color: #687c72; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        input[type="text"], input[type="date"], input[type="email"], input[type="password"] {
+        input[type="text"], input[type="date"], input[type="email"], input[type="password"], select {
             width: 100%; padding: 10px 12px; font-size: 13px; background: #f8faf9;
-            border: 1px solid #d2ded7; border-radius: 10px; outline: none; color: #2c3e35;
+            border: 1px solid #d2ded7; border-radius: 10px; outline: none; color: #2c3e35; font-family: inherit;
         }
         
-        .wrapper-slot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 2px; margin-bottom: 14px; }
-        .btn-pilih-slot {
-            padding: 8px; font-size: 13px; font-weight: 600; background: #ffffff;
-            border: 1px solid #d2ded7; border-radius: 8px; cursor: pointer; color: #4a5d53;
-        }
-        .btn-pilih-slot.aktif { background: #709a82 !important; color: #ffffff !important; border-color: #709a82 !important; }
-
+        /* BOX INPUT TIAP SLOT KEGIATAN */
         .box-kegiatan-input {
             background: #f8faf9; padding: 14px; border-radius: 14px; border: 1px solid #e2eaf0;
             margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;
@@ -74,7 +68,7 @@
         .header-left { display: flex; align-items: center; gap: 10px; }
         .logo-sekolah-box { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
         .logo-sekolah-box svg { width: 18px; height: 18px; fill: currentColor; }
-        .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; }
+        .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; text-transform: uppercase; }
         .subtitle-sekolah { font-size: 8px; color: #8fa196; font-weight: 600; text-transform: uppercase; }
         .badge-tanggal { background: #e8f0ec; color: #3a4f43; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
 
@@ -84,33 +78,46 @@
 
         .konten-kegiatan-render.mode-tunggal .baris-kegiatan { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: start; padding: 12px; }
         .konten-kegiatan-render.mode-tunggal .teks-kegiatan-wrapper { display: flex; flex-direction: column; gap: 6px; }
-        .render-nama-kegiatan { font-size: 11.5px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
+        .render-nama-kegiatan { font-size: 11px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
         
         .render-bingkai-foto { width: 100%; aspect-ratio: 4 / 3; background: #f4f7f5; border: 1px solid #e2eaf0; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
         .render-bingkai-foto svg { width: 20px; height: 20px; color: #b4c4bc; }
-        .render-deskripsi-kegiatan { font-size: 9.5px; color: #5c6e63; line-height: 1.4; text-align: justify; }
+        .render-deskripsi-kegiatan { font-size: 9px; color: #5c6e63; line-height: 1.4; text-align: justify; }
 
-        .footer-poster { border-top: 1px solid #f0f4f1; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; color: #8fa196; margin-top: 16px; }
+        .footer-poster { border-top: 1px solid #f0f4f1; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8px; color: #8fa196; margin-top: 16px; }
         .nama-petugas-bold { font-weight: 700; color: #2c3e35; font-size: 9.5px; }
 
-        /* JENDELA LOCK SCREEN / PORTAL AUTH */
+        /* JENDELA AUTH GATEWAY (LOGIN / DAFTAR) */
         .lock-screen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: #f4f7f5; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 99999; padding: 20px;
+            transition: background 0.4s ease;
         }
         .lock-card {
             background: #ffffff; width: 100%; max-width: 360px; padding: 30px 24px;
             border-radius: 24px; border: 1px solid #e2eaf0; text-align: center;
             box-shadow: 0 10px 25px rgba(44, 62, 53, 0.05);
+            transition: all 0.4s ease;
         }
-        .lock-icon { width: 50px; height: 50px; background: #e8f0ec; color: #709a82; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px; }
+        .lock-icon { 
+            width: 50px; height: 50px; background: #e8f0ec; color: #709a82; 
+            display: inline-flex; align-items: center; justify-content: center; 
+            border-radius: 50%; margin-bottom: 16px; transition: all 0.4s ease;
+        }
         .lock-title { font-size: 18px; font-weight: 700; color: #1e2d24; margin-bottom: 6px; }
         .lock-desc { font-size: 11px; color: #687c72; margin-bottom: 20px; line-height: 1.5; }
-        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: background 0.3s; }
         .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
         .link-pindah-view { color: #52796f; font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 16px; }
+
+        /* VARIASI VISUAL KHUSUS MODE DAFTAR (NAVY THEME) */
+        .lock-screen.mode-daftar-style { background: #eaf2f8; }
+        .lock-screen.mode-daftar-style .lock-card { border-color: #cbdbe6; box-shadow: 0 10px 25px rgba(27, 54, 93, 0.06); }
+        .lock-screen.mode-daftar-style .lock-icon { background: #dee7ee; color: #2a5c8a; }
+        .lock-screen.mode-daftar-style .btn-auth { background: #2a5c8a; }
+        .lock-screen.mode-daftar-style .link-pindah-view { color: #2a5c8a; }
 
         /* MODAL POP-UP CROPPER */
         .modal-crop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26, 38, 32, 0.8); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 16px; }
@@ -125,14 +132,15 @@
     <div id="lockScreen" class="lock-screen">
         <div class="lock-card">
             <div class="lock-icon" id="portalIcon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <svg id="iconLogin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <svg id="iconDaftar" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             </div>
-            <h3 class="lock-title" id="portalTitle">Login Premium Member</h3>
+            <h3 class="lock-title" id="portalTitle">Login Akun</h3>
             <p class="lock-desc" id="portalDesc">Silakan masuk menggunakan email terdaftar Anda untuk mengakses fitur pembuat laporan otomatis.</p>
             
             <div class="grup-field" style="text-align: left;">
-                <label class="label-style">Email Guru</label>
-                <input type="email" id="authEmail" placeholder="nama@sekolah.com">
+                <label class="label-style">Email</label>
+                <input type="email" id="authEmail" placeholder="nama@email.com">
             </div>
             <div class="grup-field" style="text-align: left; margin-top: 8px;">
                 <label class="label-style">Password</label>
@@ -149,28 +157,39 @@
     <div class="wrapper">
         <div class="panel-input">
             <button type="button" id="btnLogout" class="btn-logout">LOGOUT</button>
-            <h2 class="title-main">Pembuat Laporan Instan (PRO)</h2>
+            <h2 class="title-main">Pembuat Laporan Kegiatan</h2>
             <p class="subtitle-main">Koneksi Database Cloud Google Firebase Aktif.</p>
+
+            <div class="grup-field">
+                <label class="label-style">Nama Instansi / Sekolah</label>
+                <input type="text" id="inputInstansi" value="SD NEGERI SENDEN 2">
+            </div>
 
             <div class="grid-kembar">
                 <div class="grup-field">
-                    <label class="label-style">Tanggal</label>
+                    <label class="label-style">Tanggal Laporan</label>
                     <input type="date" id="inputTanggal">
                 </div>
                 <div class="grup-field">
-                    <label class="label-style">Nama Pegawai</label>
+                    <label class="label-style">Nama Pegawai / Petugas</label>
                     <input type="text" id="inputPetugas" value="Tim Dokumentasi">
                 </div>
             </div>
 
             <div class="grup-field">
-                <label class="label-style">Jumlah Kegiatan dalam 1 Halaman</label>
-                <div class="wrapper-slot">
-                    <button type="button" id="btnSet-1" class="btn-pilih-slot aktif">1</button>
-                    <button type="button" id="btnSet-2" class="btn-pilih-slot">2</button>
-                    <button type="button" id="btnSet-3" class="btn-pilih-slot">3</button>
-                    <button type="button" id="btnSet-4" class="btn-pilih-slot">4</button>
-                </div>
+                <label class="label-style">Jumlah Kegiatan Harian (Maks 10)</label>
+                <select id="selectJumlahKegiatan">
+                    <option value="1" selected>1 Kegiatan</option>
+                    <option value="2">2 Kegiatan</option>
+                    <option value="3">3 Kegiatan</option>
+                    <option value="4">4 Kegiatan</option>
+                    <option value="5">5 Kegiatan</option>
+                    <option value="6">6 Kegiatan</option>
+                    <option value="7">7 Kegiatan</option>
+                    <option value="8">8 Kegiatan</option>
+                    <option value="9">9 Kegiatan</option>
+                    <option value="10">10 Kegiatan</option>
+                </select>
             </div>
 
             <div id="formKegiatanContainer"></div>
@@ -186,7 +205,7 @@
                         <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4l7 3.82 7-3.82v-4L12 17L5 13.18z"/></svg>
                     </div>
                     <div>
-                        <div class="title-sekolah">SD NEGERI SENDEN 2</div>
+                        <div class="title-sekolah" id="viewInstansi">SD NEGERI SENDEN 2</div>
                         <div class="subtitle-sekolah">Dokumentasi Kegiatan Harian</div>
                     </div>
                 </div>
@@ -196,7 +215,7 @@
             <div id="viewKegiatanList" class="konten-kegiatan-render mode-tunggal"></div>
 
             <div class="footer-poster">
-                <div>*Digenerate instan via Aplikasi Dokumentasi Sekolah</div>
+                <div>*Digenerate instan via Aplikasi Laporan Kegiatan Harian</div>
                 <div id="viewPetugas" class="nama-petugas-bold">Tim Dokumentasi</div>
             </div>
         </div>
@@ -239,28 +258,35 @@
         const errorMsg = document.getElementById('errorMsg');
         const portalTitle = document.getElementById('portalTitle');
         const portalDesc = document.getElementById('portalDesc');
+        const iconLogin = document.getElementById('iconLogin');
+        const iconDaftar = document.getElementById('iconDaftar');
 
-        let modePortalSekarang = "login"; // "login" atau "register"
+        let modePortalSekarang = "login";
 
-        // PINDAH MODAL (LOGIN <-> REGISTRASI)
+        // PERUBAHAN VISUAL TOTAL ANTARA LOGIN & DAFTAR
         btnToggleView.addEventListener('click', () => {
             errorMsg.style.display = "none";
             if (modePortalSekarang === "login") {
                 modePortalSekarang = "register";
+                lockScreen.classList.add('mode-daftar-style');
                 portalTitle.innerText = "Daftar Akun Baru";
                 portalDesc.innerText = "Buat akun laporan Anda menggunakan email aktif harian. Akun baru wajib diaktivasi admin.";
-                btnMainAuth.innerText = "Buat Akun Premium";
+                btnMainAuth.innerText = "Buat Akun Laporan";
                 btnToggleView.innerText = "Sudah punya akun? Login di sini";
+                iconLogin.style.display = "none";
+                iconDaftar.style.display = "block";
             } else {
                 modePortalSekarang = "login";
-                portalTitle.innerText = "Login Premium Member";
+                lockScreen.classList.remove('mode-daftar-style');
+                portalTitle.innerText = "Login Akun";
                 portalDesc.innerText = "Silakan masuk menggunakan email terdaftar Anda untuk mengakses fitur pembuat laporan otomatis.";
                 btnMainAuth.innerText = "Masuk Aplikasi";
                 btnToggleView.innerText = "Belum punya akun? Daftar Baru";
+                iconLogin.style.display = "block";
+                iconDaftar.style.display = "none";
             }
         });
 
-        // MONITOR REALTIME APAKAH USER LOGGED IN DAN EXPIRED?
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
@@ -287,7 +313,6 @@
                             throw new Error("Expired");
                         }
                     } else {
-                        // KONDISI EMERGENCY JIKA STRUKTUR KOSONG, KITA AMANKAN LOCK
                         errorMsg.innerText = "Sesi akun ditangguhkan. Silakan hubungi admin.";
                         errorMsg.style.display = "block";
                         await signOut(auth);
@@ -302,7 +327,6 @@
             }
         });
 
-        // PROSES EKSEKUSI TOMBOL UTAMA
         btnMainAuth.addEventListener('click', () => {
             errorMsg.style.display = "none";
             const email = authEmail.value.trim();
@@ -322,29 +346,25 @@
                     errorMsg.style.display = "block";
                 });
             } else {
-                // PROSES PENDAFTARAN USER BARU SECARA MANDIRI
                 btnMainAuth.innerText = "Mendaftarkan Akun...";
                 createUserWithEmailAndPassword(auth, email, password)
                     .then(async (userCredential) => {
                         const u = userCredential.user;
                         const emailKey = u.email.toLowerCase().replace(/\./g, ',');
                         
-                        // Set data awal ke Realtime Database dengan status 'pending' (Terkunci otomatis)
                         await set(ref(rtdb, 'users/' + emailKey), {
                             email: u.email,
                             status: "pending",
-                            expired: "2026-01-01" // Default tanggal mati agar tidak langsung tembus
+                            expired: "2026-01-01"
                         });
 
-                        btnMainAuth.innerText = "Buat Akun Premium";
+                        btnMainAuth.innerText = "Buat Akun Laporan";
                         errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
                         errorMsg.style.display = "block";
-                        
-                        // Paksa logout setelah daftar agar statusnya bersih menunggu approve admin
                         await signOut(auth);
                     })
                     .catch(error => {
-                        btnMainAuth.innerText = "Buat Akun Premium";
+                        btnMainAuth.innerText = "Buat Akun Laporan";
                         errorMsg.innerText = "Gagal mendaftar: " + error.message;
                         errorMsg.style.display = "block";
                     });
@@ -361,13 +381,22 @@
         let cropperInstance = null;
         let slotAktifDipotong = null;
 
+        // Menyediakan bank data template sampai maksimal 10 slot kegiatan harian
         const dataDefault = [
-            { nama: "Pendampingan TKA Kelas VI", desc: "Pendampingan persiapan ujian.", foto: "" },
-            { nama: "Rapat Koordinasi Guru", desc: "Membahas evaluasi mingguan sekolah.", foto: "" },
-            { nama: "Kerja Bakti Lingkungan", desc: "", foto: "" },
-            { nama: "Penyusunan Laporan BOS", desc: "", foto: "" }
+            { nama: "Pendampingan Ujian Sekolah", desc: "Membantu pengawasan ruang belajar.", foto: "" },
+            { nama: "Rapat Kerja Bulanan", desc: "Evaluasi program harian bersama tim.", foto: "" },
+            { nama: "Kerja Bakti Lingkungan", desc: "Merapikan fasilitas halaman utama.", foto: "" },
+            { nama: "Penyusunan Berkas Administrasi", desc: "Input data berkas harian.", foto: "" },
+            { nama: "Kegiatan Slot 5", desc: "", foto: "" },
+            { nama: "Kegiatan Slot 6", desc: "", foto: "" },
+            { nama: "Kegiatan Slot 7", desc: "", foto: "" },
+            { nama: "Kegiatan Slot 8", desc: "", foto: "" },
+            { nama: "Kegiatan Slot 9", desc: "", foto: "" },
+            { nama: "Kegiatan Slot 10", desc: "", foto: "" }
         ];
 
+        const inputInstansi = document.getElementById('inputInstansi');
+        const viewInstansi = document.getElementById('viewInstansi');
         const inputTanggal = document.getElementById('inputTanggal');
         const inputPetugas = document.getElementById('inputPetugas');
         const viewTanggal = document.getElementById('viewTanggal');
@@ -378,11 +407,14 @@
         const modalCrop = document.getElementById('modalCrop');
         const imageToCrop = document.getElementById('imageToCrop');
         const btnSaveCrop = document.getElementById('btnSaveCrop');
+        const selectJumlahKegiatan = document.getElementById('selectJumlahKegiatan');
 
         const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
 
+        // Event listener sinkronisasi live teks instansi
+        inputInstansi.addEventListener('input', (e) => { viewInstansi.innerText = e.target.value.trim() || "NAMA INSTANSI"; });
         inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
         inputPetugas.addEventListener('input', (e) => { viewPetugas.innerText = e.target.value.trim() || "-"; });
 
@@ -392,19 +424,11 @@
             viewTanggal.innerText = new Date(dateString).toLocaleDateString('id-ID', opsi);
         }
 
-        for(let i=1; i<=4; i++) {
-            document.getElementById(`btnSet-${i}`).addEventListener('click', function() {
-                setJumlahKegiatan(i);
-            });
-        }
-
-        function setJumlahKegiatan(jumlah) {
-            jumlahKegiatanAktif = jumlah;
-            for(let i=1; i<=4; i++) {
-                document.getElementById(`btnSet-${i}`).classList.toggle('aktif', i === jumlah);
-            }
+        // Listener mendeteksi perubahan select dropdown up to 10 kegiatan
+        selectJumlahKegiatan.addEventListener('change', function(e) {
+            jumlahKegiatanAktif = parseInt(e.target.value);
             renderFormDanPreview();
-        }
+        });
 
         function renderFormDanPreview() {
             formContainer.innerHTML = '';
