@@ -16,7 +16,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f4f7f5; 
+            background-color: #f5f3ef; /* Warm Sand Palette */
             color: #2c3e35; 
             padding: 24px 12px;
             display: flex; flex-direction: column; align-items: center; gap: 20px;
@@ -24,28 +24,34 @@
 
         .wrapper { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* PANEL INPUT DATA */
+        /* PANEL INPUT DATA (SAGE & SAND DUAL TONE) */
         .panel-input {
-            background: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid #e2eaf0;
-            box-shadow: 0 4px 12px rgba(44, 62, 53, 0.03); position: relative;
+            background: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid #e6dfd5;
+            box-shadow: 0 4px 16px rgba(112, 154, 130, 0.06); position: relative;
         }
         .title-main { font-size: 16px; font-weight: 700; color: #1e2d24; }
-        .subtitle-main { font-size: 11px; color: #687c72; margin-top: 4px; margin-bottom: 16px; }
+        .subtitle-main { font-size: 11px; color: #709a82; font-weight: 600; margin-top: 4px; margin-bottom: 16px; }
         .grid-kembar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .grup-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+        .grup-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; position: relative; }
         .label-style { font-size: 10px; font-weight: 700; color: #687c72; text-transform: uppercase; letter-spacing: 0.5px; }
         
         input[type="text"], input[type="date"], input[type="email"], input[type="password"], select {
-            width: 100%; padding: 10px 12px; font-size: 13px; background: #f8faf9;
-            border: 1px solid #d2ded7; border-radius: 10px; outline: none; color: #2c3e35; font-family: inherit;
+            width: 100%; padding: 10px 12px; font-size: 13px; background: #fcfbfa;
+            border: 1px solid #dcd5cc; border-radius: 10px; outline: none; color: #2c3e35; font-family: inherit;
         }
+        input:focus, select:focus { border-color: #709a82; background: #ffffff; }
         
-        /* BOX INPUT TIAP SLOT KEGIATAN */
+        /* TOMBOL MATA PASSWORD */
+        .btn-mata-pass {
+            position: absolute; right: 12px; bottom: 8px; background: none; border: none;
+            color: #8fa196; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
         .box-kegiatan-input {
-            background: #f8faf9; padding: 14px; border-radius: 14px; border: 1px solid #e2eaf0;
+            background: #f7f5f1; padding: 14px; border-radius: 14px; border: 1px solid #ebd9c5;
             margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;
         }
-        .text-kegiatan-id { font-size: 10px; font-weight: 700; color: #52796f; }
+        .text-kegiatan-id { font-size: 10px; font-weight: 700; color: #4a6b56; }
         input[type="file"] { font-size: 11px; color: #687c72; }
 
         .btn-unduh-jpg {
@@ -69,7 +75,7 @@
         .logo-sekolah-box { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
         .logo-sekolah-box svg { width: 18px; height: 18px; fill: currentColor; }
         .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; text-transform: uppercase; }
-        .subtitle-sekolah { font-size: 8px; color: #8fa196; font-weight: 600; text-transform: uppercase; }
+        .subtitle-sekolah { font-size: 9px; color: #709a82; font-weight: 600; letter-spacing: 0.3px; }
         .badge-tanggal { background: #e8f0ec; color: #3a4f43; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
 
         .konten-kegiatan-render { display: flex; flex-direction: column; gap: 16px; }
@@ -86,19 +92,20 @@
         .render-deskripsi-kegiatan { font-size: 9px; color: #5c6e63; line-height: 1.4; text-align: justify; }
 
         .footer-poster { border-top: 1px solid #f0f4f1; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8px; color: #8fa196; margin-top: 16px; }
+        .watermark-kecil { font-size: 7.5px; color: #b0b0b0; font-style: italic; }
         .nama-petugas-bold { font-weight: 700; color: #2c3e35; font-size: 9.5px; }
 
-        /* JENDELA AUTH GATEWAY (LOGIN / DAFTAR) */
+        /* JENDELA PORTAL MULTI-WARNA (DEFAULT LOGIN: SAGE & CREAM) */
         .lock-screen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: #f4f7f5; display: flex; flex-direction: column;
+            background: linear-gradient(135deg, #f4f7f5 0%, #f5f3ef 100%); display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 99999; padding: 20px;
-            transition: background 0.4s ease;
+            transition: all 0.4s ease;
         }
         .lock-card {
             background: #ffffff; width: 100%; max-width: 360px; padding: 30px 24px;
             border-radius: 24px; border: 1px solid #e2eaf0; text-align: center;
-            box-shadow: 0 10px 25px rgba(44, 62, 53, 0.05);
+            box-shadow: 0 10px 30px rgba(112, 154, 130, 0.08);
             transition: all 0.4s ease;
         }
         .lock-icon { 
@@ -108,16 +115,17 @@
         }
         .lock-title { font-size: 18px; font-weight: 700; color: #1e2d24; margin-bottom: 6px; }
         .lock-desc { font-size: 11px; color: #687c72; margin-bottom: 20px; line-height: 1.5; }
-        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: background 0.3s; }
+        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.3s; }
         .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
         .link-pindah-view { color: #52796f; font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 16px; }
 
-        /* VARIASI VISUAL KHUSUS MODE DAFTAR (NAVY THEME) */
-        .lock-screen.mode-daftar-style { background: #eaf2f8; }
-        .lock-screen.mode-daftar-style .lock-card { border-color: #cbdbe6; box-shadow: 0 10px 25px rgba(27, 54, 93, 0.06); }
-        .lock-screen.mode-daftar-style .lock-icon { background: #dee7ee; color: #2a5c8a; }
-        .lock-screen.mode-daftar-style .btn-auth { background: #2a5c8a; }
-        .lock-screen.mode-daftar-style .link-pindah-view { color: #2a5c8a; }
+        /* VARIASI VISUAL KHUSUS MODE DAFTAR (DEEP NAVY & ICE BLUE) */
+        .lock-screen.mode-daftar-style { background: linear-gradient(135deg, #1b2a47 0%, #2e4369 100%); }
+        .lock-screen.mode-daftar-style .lock-card { border-color: #34496e; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .lock-screen.mode-daftar-style .lock-icon { background: #e1e9f5; color: #234475; }
+        .lock-screen.mode-daftar-style .lock-title { color: #111a2e; }
+        .lock-screen.mode-daftar-style .btn-auth { background: #234475; }
+        .lock-screen.mode-daftar-style .link-pindah-view { color: #234475; }
 
         /* MODAL POP-UP CROPPER */
         .modal-crop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26, 38, 32, 0.8); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 16px; }
@@ -136,20 +144,23 @@
                 <svg id="iconDaftar" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             </div>
             <h3 class="lock-title" id="portalTitle">Login Akun</h3>
-            <p class="lock-desc" id="portalDesc">Silakan masuk menggunakan email terdaftar Anda untuk mengakses fitur pembuat laporan otomatis.</p>
+            <p class="lock-desc" id="portalDesc">Silakan masuk menggunakan akun terdaftar untuk mengakses generator laporan otomatis.</p>
             
             <div class="grup-field" style="text-align: left;">
                 <label class="label-style">Email</label>
-                <input type="email" id="authEmail" placeholder="nama@email.com">
+                <input type="email" id="authEmail" placeholder="nama@instansi.com">
             </div>
             <div class="grup-field" style="text-align: left; margin-top: 8px;">
                 <label class="label-style">Password</label>
                 <input type="password" id="authPassword" placeholder="******">
+                <button type="button" class="btn-mata-pass" id="togglePassword">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
             </div>
             
             <div id="errorMsg" class="error-msg">Email atau Password salah!</div>
             
-            <button type="button" id="btnMainAuth" class="btn-auth">Masuk Aplikasi</button>
+            <button type="button" id="btnMainAuth" class="btn-auth">Masuk</button>
             <div id="btnToggleView" class="link-pindah-view">Belum punya akun? Daftar Baru</div>
         </div>
     </div>
@@ -157,12 +168,12 @@
     <div class="wrapper">
         <div class="panel-input">
             <button type="button" id="btnLogout" class="btn-logout">LOGOUT</button>
-            <h2 class="title-main">Pembuat Laporan Kegiatan</h2>
+            <h2 class="title-main">Generator Laporan Instan</h2>
             <p class="subtitle-main">Koneksi Database Cloud Google Firebase Aktif.</p>
 
             <div class="grup-field">
-                <label class="label-style">Nama Instansi / Sekolah</label>
-                <input type="text" id="inputInstansi" value="SD NEGERI SENDEN 2">
+                <label class="label-style">Nama Instansi / Kantor / Sekolah</label>
+                <input type="text" id="inputInstansi" value="DINAS PENDIDIKAN">
             </div>
 
             <div class="grid-kembar">
@@ -171,7 +182,7 @@
                     <input type="date" id="inputTanggal">
                 </div>
                 <div class="grup-field">
-                    <label class="label-style">Nama Pegawai / Petugas</label>
+                    <label class="label-style">Nama Personel / Petugas</label>
                     <input type="text" id="inputPetugas" value="Tim Dokumentasi">
                 </div>
             </div>
@@ -205,8 +216,8 @@
                         <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4l7 3.82 7-3.82v-4L12 17L5 13.18z"/></svg>
                     </div>
                     <div>
-                        <div class="title-sekolah" id="viewInstansi">SD NEGERI SENDEN 2</div>
-                        <div class="subtitle-sekolah">Dokumentasi Kegiatan Harian</div>
+                        <div class="title-sekolah" id="viewInstansi">DINAS PENDIDIKAN</div>
+                        <div class="subtitle-sekolah">Laporan Kegiatan Harian</div>
                     </div>
                 </div>
                 <span id="viewTanggal" class="badge-tanggal">-</span>
@@ -215,7 +226,7 @@
             <div id="viewKegiatanList" class="konten-kegiatan-render mode-tunggal"></div>
 
             <div class="footer-poster">
-                <div>*Digenerate instan via Aplikasi Laporan Kegiatan Harian</div>
+                <div class="watermark-kecil">*c ristanane</div>
                 <div id="viewPetugas" class="nama-petugas-bold">Tim Dokumentasi</div>
             </div>
         </div>
@@ -260,27 +271,34 @@
         const portalDesc = document.getElementById('portalDesc');
         const iconLogin = document.getElementById('iconLogin');
         const iconDaftar = document.getElementById('iconDaftar');
+        const togglePassword = document.getElementById('togglePassword');
 
         let modePortalSekarang = "login";
 
-        // PERUBAHAN VISUAL TOTAL ANTARA LOGIN & DAFTAR
+        // ACTION BUTTON SHOW/HIDE PASSWORD
+        togglePassword.addEventListener('click', () => {
+            const tipeSekarang = authPassword.getAttribute('type');
+            authPassword.setAttribute('type', tipeSekarang === 'password' ? 'text' : 'password');
+        });
+
+        // PERUBAHAN VISUAL TOTAL ANTARA LOGIN & DAFTAR (KOREKSI TEXT SESUAI PERMINTAAN)
         btnToggleView.addEventListener('click', () => {
             errorMsg.style.display = "none";
             if (modePortalSekarang === "login") {
                 modePortalSekarang = "register";
                 lockScreen.classList.add('mode-daftar-style');
-                portalTitle.innerText = "Daftar Akun Baru";
-                portalDesc.innerText = "Buat akun laporan Anda menggunakan email aktif harian. Akun baru wajib diaktivasi admin.";
-                btnMainAuth.innerText = "Buat Akun Laporan";
-                btnToggleView.innerText = "Sudah punya akun? Login di sini";
+                portalTitle.innerText = "Daftar Akun";
+                portalDesc.innerText = "Silakan buat akun baru. Akun baru wajib diaktivasi oleh Admin untuk dapat digunakan.";
+                btnMainAuth.innerText = "Buat Akun";
+                btnToggleView.innerText = "Sudah punya akun? Masuk di sini";
                 iconLogin.style.display = "none";
                 iconDaftar.style.display = "block";
             } else {
                 modePortalSekarang = "login";
                 lockScreen.classList.remove('mode-daftar-style');
                 portalTitle.innerText = "Login Akun";
-                portalDesc.innerText = "Silakan masuk menggunakan email terdaftar Anda untuk mengakses fitur pembuat laporan otomatis.";
-                btnMainAuth.innerText = "Masuk Aplikasi";
+                portalDesc.innerText = "Silakan masuk menggunakan akun terdaftar untuk mengakses generator laporan otomatis.";
+                btnMainAuth.innerText = "Masuk";
                 btnToggleView.innerText = "Belum punya akun? Daftar Baru";
                 iconLogin.style.display = "block";
                 iconDaftar.style.display = "none";
@@ -341,12 +359,12 @@
             if (modePortalSekarang === "login") {
                 btnMainAuth.innerText = "Memverifikasi...";
                 signInWithEmailAndPassword(auth, email, password).catch(error => {
-                    btnMainAuth.innerText = "Masuk Aplikasi";
+                    btnMainAuth.innerText = "Masuk";
                     errorMsg.innerText = "Email atau Password salah!";
                     errorMsg.style.display = "block";
                 });
             } else {
-                btnMainAuth.innerText = "Mendaftarkan Akun...";
+                btnMainAuth.innerText = "Mendaftarkan...";
                 createUserWithEmailAndPassword(auth, email, password)
                     .then(async (userCredential) => {
                         const u = userCredential.user;
@@ -358,13 +376,13 @@
                             expired: "2026-01-01"
                         });
 
-                        btnMainAuth.innerText = "Buat Akun Laporan";
+                        btnMainAuth.innerText = "Buat Akun";
                         errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
                         errorMsg.style.display = "block";
                         await signOut(auth);
                     })
                     .catch(error => {
-                        btnMainAuth.innerText = "Buat Akun Laporan";
+                        btnMainAuth.innerText = "Buat Akun";
                         errorMsg.innerText = "Gagal mendaftar: " + error.message;
                         errorMsg.style.display = "block";
                     });
@@ -381,12 +399,11 @@
         let cropperInstance = null;
         let slotAktifDipotong = null;
 
-        // Menyediakan bank data template sampai maksimal 10 slot kegiatan harian
         const dataDefault = [
-            { nama: "Pendampingan Ujian Sekolah", desc: "Membantu pengawasan ruang belajar.", foto: "" },
-            { nama: "Rapat Kerja Bulanan", desc: "Evaluasi program harian bersama tim.", foto: "" },
-            { nama: "Kerja Bakti Lingkungan", desc: "Merapikan fasilitas halaman utama.", foto: "" },
-            { nama: "Penyusunan Berkas Administrasi", desc: "Input data berkas harian.", foto: "" },
+            { nama: "Pendampingan Program Kerja", desc: "Melakukan monitoring berkas di ruang utama.", foto: "" },
+            { nama: "Rapat Koordinasi Internal", desc: "Membahas evaluasi program harian bersama tim.", foto: "" },
+            { nama: "Penataan Dokumentasi Sektor", desc: "Merapikan arsip laporan harian fisik.", foto: "" },
+            { nama: "Penyusunan Laporan Pertanggungjawaban", desc: "", foto: "" },
             { nama: "Kegiatan Slot 5", desc: "", foto: "" },
             { nama: "Kegiatan Slot 6", desc: "", foto: "" },
             { nama: "Kegiatan Slot 7", desc: "", foto: "" },
@@ -413,7 +430,6 @@
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
 
-        // Event listener sinkronisasi live teks instansi
         inputInstansi.addEventListener('input', (e) => { viewInstansi.innerText = e.target.value.trim() || "NAMA INSTANSI"; });
         inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
         inputPetugas.addEventListener('input', (e) => { viewPetugas.innerText = e.target.value.trim() || "-"; });
@@ -424,7 +440,6 @@
             viewTanggal.innerText = new Date(dateString).toLocaleDateString('id-ID', opsi);
         }
 
-        // Listener mendeteksi perubahan select dropdown up to 10 kegiatan
         selectJumlahKegiatan.addEventListener('change', function(e) {
             jumlahKegiatanAktif = parseInt(e.target.value);
             renderFormDanPreview();
@@ -448,7 +463,7 @@
                 formGroup.innerHTML = `
                     <div class="text-kegiatan-id">SLOT KEGIATAN #${i}</div>
                     <div class="grup-field"><input type="text" id="keg-nama-${i}" value="${def.nama}"></div>
-                    <div class="grup-field"><input type="text" id="keg-desc-${i}" placeholder="Deskripsi (Opsional)" value="${def.desc}"></div>
+                    <div class="grup-field"><input type="text" id="keg-desc-${i}" placeholder="Deskripsi Singkat (Opsional)" value="${def.desc}"></div>
                     <div class="grup-field"><input type="file" id="keg-foto-${i}" accept="image/*"></div>
                 `;
                 formContainer.appendChild(formGroup);
@@ -526,7 +541,7 @@
             btnDownload.innerHTML = "Memproses..."; btnDownload.disabled = true;
             html2canvas(templateLaporan, { scale: 2.5, useCORS: true, allowTaint: true, backgroundColor: "#ffffff" }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `laporan-harian-${inputTanggal.value || 'sekolah'}.jpg`;
+                link.download = `laporan-harian-${inputTanggal.value || 'kegiatan'}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.95);
                 document.body.appendChild(link); link.click(); document.body.removeChild(link);
                 btnDownload.innerHTML = textAwal; btnDownload.disabled = false;
