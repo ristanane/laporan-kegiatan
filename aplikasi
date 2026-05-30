@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium - Generator Laporan SDN Senden 2</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f4f7f5; 
+            color: #2c3e35; 
+            padding: 24px 12px;
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+        }
+
+        .wrapper { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* PANEL INPUT DATA */
+        .panel-input {
+            background: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid #e2eaf0;
+            box-shadow: 0 4px 12px rgba(44, 62, 53, 0.03); position: relative;
+        }
+        .title-main { font-size: 16px; font-weight: 700; color: #1e2d24; }
+        .subtitle-main { font-size: 11px; color: #687c72; margin-top: 4px; margin-bottom: 16px; }
+        .grid-kembar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .grup-field { display: flex; flex-direction: column; gap: 4px; }
+        .label-style { font-size: 10px; font-weight: 700; color: #687c72; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        input[type="text"], input[type="date"] {
+            width: 100%; padding: 8px 12px; font-size: 13px; background: #f8faf9;
+            border: 1px solid #d2ded7; border-radius: 10px; outline: none; color: #2c3e35;
+        }
+        
+        .wrapper-slot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 2px; margin-bottom: 14px; }
+        .btn-pilih-slot {
+            padding: 8px; font-size: 13px; font-weight: 600; background: #ffffff;
+            border: 1px solid #d2ded7; border-radius: 8px; cursor: pointer; color: #4a5d53;
+        }
+        .btn-pilih-slot.aktif { background: #709a82 !important; color: #ffffff !important; border-color: #709a82 !important; }
+
+        .box-kegiatan-input {
+            background: #f8faf9; padding: 14px; border-radius: 14px; border: 1px solid #e2eaf0;
+            margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;
+        }
+        .text-kegiatan-id { font-size: 10px; font-weight: 700; color: #52796f; }
+        input[type="file"] { font-size: 11px; color: #687c72; }
+
+        .btn-unduh-jpg {
+            width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none;
+            border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* PREVIEW POSTER SAGE PASTEL */
+        #templateLaporan {
+            width: 440px; height: auto; background: #ffffff; padding: 24px; border-radius: 4px;
+            box-shadow: 0 8px 24px rgba(44, 62, 53, 0.05); border: 1px solid #e2eaf0;
+            position: relative; display: flex; flex-direction: column; overflow: hidden;
+        }
+        .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #709a82; }
+        .header-poster { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f4f1; padding-bottom: 12px; margin-bottom: 16px; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .logo-sekolah-box { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .logo-sekolah-box svg { width: 18px; height: 18px; fill: currentColor; }
+        .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; }
+        .subtitle-sekolah { font-size: 8px; color: #8fa196; font-weight: 600; text-transform: uppercase; }
+        .badge-tanggal { background: #e8f0ec; color: #3a4f43; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+        .konten-kegiatan-render { display: flex; flex-direction: column; gap: 16px; }
+        .konten-kegiatan-render.mode-multi { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+        .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; background: #fcfdfe; border: 1px solid #edf2ef; padding: 10px; border-radius: 12px; }
+
+        .konten-kegiatan-render.mode-tunggal .baris-kegiatan { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: start; padding: 12px; }
+        .konten-kegiatan-render.mode-tunggal .teks-kegiatan-wrapper { display: flex; flex-direction: column; gap: 6px; }
+        .render-nama-kegiatan { font-size: 11.5px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
+        
+        .render-bingkai-foto { width: 100%; aspect-ratio: 4 / 3; background: #f4f7f5; border: 1px solid #e2eaf0; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
+        .render-bingkai-foto svg { width: 20px; height: 20px; color: #b4c4bc; }
+        .render-deskripsi-kegiatan { font-size: 9.5px; color: #5c6e63; line-height: 1.4; text-align: justify; }
+
+        .footer-poster { border-top: 1px solid #f0f4f1; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; color: #8fa196; margin-top: 16px; }
+        .nama-petugas-bold { font-weight: 700; color: #2c3e35; font-size: 9.5px; }
+
+        /* POP-UP TAMPILAN LOCK SCREEN TOKEN (SAGE STYLE) */
+        .lock-screen {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: #f4f7f5; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 99999; padding: 20px;
+        }
+        .lock-card {
+            background: #ffffff; width: 100%; max-width: 360px; padding: 30px 24px;
+            border-radius: 24px; border: 1px solid #e2eaf0; text-align: center;
+            box-shadow: 0 10px 25px rgba(44, 62, 53, 0.05);
+        }
+        .lock-icon { width: 50px; height: 50px; background: #e8f0ec; color: #709a82; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px; }
+        .lock-title { font-size: 18px; font-weight: 700; color: #1e2d24; margin-bottom: 6px; }
+        .lock-desc { font-size: 11px; color: #687c72; margin-bottom: 20px; line-height: 1.5; }
+        .btn-aktifkan {
+            width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none;
+            border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px;
+        }
+        .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; }
+
+        /* MODAL POP-UP CROPPER */
+        .modal-crop {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(26, 38, 32, 0.8); display: none;
+            align-items: center; justify-content: center; z-index: 9999; padding: 16px;
+        }
+        .modal-content { background: #ffffff; width: 100%; max-width: 400px; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 14px; }
+        .crop-area { width: 100%; max-height: 300px; background: #000; overflow: hidden; border-radius: 8px; }
+        .crop-area img { max-width: 100%; display: block; }
+        .btn-crop-confirm { width: 100%; padding: 10px; background: #709a82; color: #ffffff; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="lockScreen" class="lock-screen">
+        <div class="lock-card">
+            <div class="lock-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <div class="lock-title">Aktivasi Aplikasi</div>
+            <div id="lockDesc" class="lock-desc">Silakan masukkan token akses bulanan yang valid untuk menggunakan generator laporan premium ini.</div>
+            
+            <div class="grup-field" style="text-align: left;">
+                <input type="text" id="tokenInput" placeholder="Masukkan Token Akses" style="text-align: center; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">
+                <div id="errorMsg" class="error-msg">Token salah atau sudah expired!</div>
+            </div>
+            <button type="button" id="btnAktifkan" class="btn-aktifkan">Verifikasi Akses</button>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="panel-input">
+            <h2 class="title-main">Pembuat Laporan Instan (PRO)</h2>
+            <p class="subtitle-main">Versi Premium Berlangganan — Terbuka.</p>
+
+            <div class="grid-kembar">
+                <div class="grup-field">
+                    <label class="label-style">Tanggal</label>
+                    <input type="date" id="inputTanggal">
+                </div>
+                <div class="grup-field">
+                    <label class="label-style">Nama Pegawai</label>
+                    <input type="text" id="inputPetugas" value="Tim Dokumentasi">
+                </div>
+            </div>
+
+            <div class="grup-field">
+                <label class="label-style">Jumlah Kegiatan dalam 1 Halaman</label>
+                <div class="wrapper-slot">
+                    <button type="button" onclick="setJumlahKegiatan(1)" id="btnSet-1" class="btn-pilih-slot aktif">1</button>
+                    <button type="button" onclick="setJumlahKegiatan(2)" id="btnSet-2" class="btn-pilih-slot">2</button>
+                    <button type="button" onclick="setJumlahKegiatan(3)" id="btnSet-3" class="btn-pilih-slot">3</button>
+                    <button type="button" onclick="setJumlahKegiatan(4)" id="btnSet-4" class="btn-pilih-slot">4</button>
+                </div>
+            </div>
+
+            <div id="formKegiatanContainer"></div>
+            <button id="btnDownload" class="btn-unduh-jpg">Unduh Laporan (JPG)</button>
+        </div>
+
+        <span class="label-style" style="align-self: flex-start;">Pratinjau Hasil Cetak:</span>
+        <div id="templateLaporan">
+            <div class="top-accent-line"></div>
+            <div class="header-poster">
+                <div class="header-left">
+                    <div class="logo-sekolah-box">
+                        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4l7 3.82 7-3.82v-4L12 17L5 13.18z"/></svg>
+                    </div>
+                    <div>
+                        <div class="title-sekolah">SD NEGERI SENDEN 2</div>
+                        <div class="subtitle-sekolah">Dokumentasi Kegiatan Harian</div>
+                    </div>
+                </div>
+                <span id="viewTanggal" class="badge-tanggal">-</span>
+            </div>
+
+            <div id="viewKegiatanList" class="konten-kegiatan-render mode-tunggal"></div>
+
+            <div class="footer-poster">
+                <div>*Digenerate instan via Aplikasi Dokumentasi Sekolah</div>
+                <div id="viewPetugas" class="nama-petugas-bold">Tim Dokumentasi</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalCrop" class="modal-crop">
+        <div class="modal-content">
+            <div class="text-kegiatan-id" style="font-size:13px; color:#1e2823;">Geser / Atur Posisi Foto (4:3)</div>
+            <div class="crop-area"><img id="imageToCrop" src=""></div>
+            <button type="button" id="btnSaveCrop" class="btn-crop-confirm">Potong & Pasang Foto</button>
+        </div>
+    </div>
+
+    <script>
+        // DAFTAR DATABASE TOKEN REKAYASA BULANAN
+        const databaseToken = {
+            "2026-06": "SAGE06", // Token valid sepanjang Juni 2026
+            "2026-07": "SAGE07"  // Token valid sepanjang Juli 2026
+        };
+
+        const lockScreen = document.getElementById('lockScreen');
+        const tokenInput = document.getElementById('tokenInput');
+        const btnAktifkan = document.getElementById('btnAktifkan');
+        const errorMsg = document.getElementById('errorMsg');
+        const lockDesc = document.getElementById('lockDesc');
+
+        // AMBIL BULAN SEKARANG DI HP USER
+        const waktuSekarang = new Date();
+        const tahunBulanSekarang = waktuSekarang.getFullYear() + "-" + String(waktuSekarang.getMonth() + 1).padStart(2, '0');
+        const tokenSeharusnya = databaseToken[tahunBulanSekarang] || "MASTERKEY";
+
+        // Ubah teks panduan sesuai bulan berjalan harian
+        const namaBulanIndo = waktuSekarang.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        lockDesc.innerText = `Silakan masukkan token akses resmi untuk periode aktif bulan ${namaBulanIndo}.`;
+
+        // CEK STATUS LOGIN SEBELUMNYA (Biar user tidak capek ketik token tiap buka aplikasi)
+        if (localStorage.getItem('statusAktivasiLaporan') === tokenSeharusnya) {
+            lockScreen.style.display = "none";
+        }
+
+        // AKSI TOMBOL VERIFIKASI
+        btnAktifkan.addEventListener('click', function() {
+            const inputUser = tokenInput.value.trim().toUpperCase();
+            
+            if (inputUser === tokenSeharusnya) {
+                // Sukses! Simpan status ke memori browser HP
+                localStorage.setItem('statusAktivasiLaporan', tokenSeharusnya);
+                lockScreen.style.display = "none";
+            } else {
+                errorMsg.style.display = "block";
+                tokenInput.value = "";
+            }
+        });
+
+        // --- SISTEM ENGINE CORE APLIKASI ---
+        let jumlahKegiatanAktif = 1;
+        let cropperInstance = null;
+        let slotAktifDipotong = null;
+
+        const dataDefault = [
+            { nama: "Pendampingan TKA Kelas VI", desc: "Pendampingan persiapan ujian.", foto: "" },
+            { nama: "Rapat Koordinasi Guru", desc: "Membahas evaluasi mingguan sekolah.", foto: "" },
+            { nama: "Kerja Bakti Lingkungan", desc: "", foto: "" },
+            { nama: "Penyusunan Laporan BOS", desc: "", foto: "" }
+        ];
+
+        const inputTanggal = document.getElementById('inputTanggal');
+        const inputPetugas = document.getElementById('inputPetugas');
+        const viewTanggal = document.getElementById('viewTanggal');
+        const viewPetugas = document.getElementById('viewPetugas');
+        const formContainer = document.getElementById('formKegiatanContainer');
+        const viewContainer = document.getElementById('viewKegiatanList');
+        const btnDownload = document.getElementById('btnDownload');
+        const modalCrop = document.getElementById('modalCrop');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const btnSaveCrop = document.getElementById('btnSaveCrop');
+
+        const hariIni = waktuSekarang.toISOString().split('T')[0];
+        inputTanggal.value = hariIni;
+        formatDanSetTanggal(hariIni);
+
+        inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
+        inputPetugas.addEventListener('input', (e) => { viewPetugas.innerText = e.target.value.trim() || "-"; });
+
+        function formatDanSetTanggal(dateString) {
+            if(!dateString) return;
+            const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            viewTanggal.innerText = new Date(dateString).toLocaleDateString('id-ID', opsi);
+        }
+
+        function setJumlahKegiatan(jumlah) {
+            jumlahKegiatanAktif = jumlah;
+            for(let i=1; i<=4; i++) {
+                document.getElementById(`btnSet-${i}`).classList.toggle('aktif', i === jumlah);
+            }
+            renderFormDanPreview();
+        }
+
+        function renderFormDanPreview() {
+            formContainer.innerHTML = '';
+            viewContainer.innerHTML = '';
+
+            if (jumlahKegiatanAktif === 1) {
+                viewContainer.className = "konten-kegiatan-render mode-tunggal";
+            } else {
+                viewContainer.className = "konten-kegiatan-render mode-multi";
+            }
+
+            for (let i = 1; i <= jumlahKegiatanAktif; i++) {
+                const def = dataDefault[i-1];
+
+                const formGroup = document.createElement('div');
+                formGroup.className = "box-kegiatan-input";
+                formGroup.innerHTML = `
+                    <div class="text-kegiatan-id">SLOT KEGIATAN #${i}</div>
+                    <div class="grup-field"><input type="text" id="keg-nama-${i}" value="${def.nama}"></div>
+                    <div class="grup-field"><input type="text" id="keg-desc-${i}" placeholder="Deskripsi (Opsional)" value="${def.desc}"></div>
+                    <div class="grup-field"><input type="file" id="keg-foto-${i}" accept="image/*"></div>
+                `;
+                formContainer.appendChild(formGroup);
+
+                const viewRow = document.createElement('div');
+                viewRow.className = "baris-kegiatan";
+                
+                if (jumlahKegiatanAktif === 1) {
+                    viewRow.innerHTML = `
+                        <div class="render-bingkai-foto" id="pv-box-foto-${i}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        </div>
+                        <div class="teks-kegiatan-wrapper">
+                            <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama}</div>
+                            <div class="render-deskripsi-kegiatan" id="pv-desc-${i}">${def.desc}</div>
+                        </div>
+                    `;
+                } else {
+                    viewRow.innerHTML = `
+                        <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama}</div>
+                        <div class="render-bingkai-foto" id="pv-box-foto-${i}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        </div>
+                        <div class="render-deskripsi-kegiatan" id="pv-desc-${i}">${def.desc}</div>
+                    `;
+                }
+                viewContainer.appendChild(viewRow);
+
+                document.getElementById(`keg-nama-${i}`).addEventListener('input', (e) => {
+                    document.getElementById(`pv-nama-${i}`).innerText = e.target.value.trim() || `Kegiatan ${i}`;
+                    dataDefault[i-1].nama = e.target.value;
+                });
+
+                document.getElementById(`keg-desc-${i}`).addEventListener('input', (e) => {
+                    const txt = e.target.value.trim();
+                    dataDefault[i-1].desc = e.target.value;
+                    document.getElementById(`pv-desc-${i}`).style.display = txt === "" ? 'none' : 'block';
+                    document.getElementById(`pv-desc-${i}`).innerText = txt;
+                });
+
+                document.getElementById(`keg-foto-${i}`).addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(file) {
+                        slotAktifDipotong = i;
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            imageToCrop.src = event.target.result;
+                            modalCrop.style.display = "flex";
+                            if(cropperInstance) cropperInstance.destroy();
+                            cropperInstance = new Cropper(imageToCrop, { aspectRatio: 4 / 3, viewMode: 1, autoCropArea: 1 });
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                if(def.foto) { document.getElementById(`pv-box-foto-${i}`).innerHTML = `<img src="${def.foto}">`; }
+            }
+        }
+
+        btnSaveCrop.addEventListener('click', function() {
+            if (cropperInstance && slotAktifDipotong) {
+                const canvasDipotong = cropperInstance.getCroppedCanvas({ width: 640, height: 480 });
+                const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.9);
+                dataDefault[slotAktifDipotong-1].foto = base64Gambar;
+                document.getElementById(`pv-box-foto-${slotAktifDipotong}`).innerHTML = `<img src="${base64Gambar}">`;
+                modalCrop.style.display = "none";
+                cropperInstance.destroy(); cropperInstance = null;
+            }
+        });
+
+        renderFormDanPreview();
+
+        btnDownload.addEventListener('click', function() {
+            const textAwal = btnDownload.innerHTML;
+            btnDownload.innerHTML = "Memproses..."; btnDownload.disabled = true;
+            html2canvas(templateLaporan, { scale: 2.5, useCORS: true, allowTaint: true, backgroundColor: "#ffffff" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `laporan-harian-${inputTanggal.value || 'sekolah'}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                btnDownload.innerHTML = textAwal; btnDownload.disabled = false;
+            }).catch(err => {
+                alert("Gagal memproses gambar: " + err);
+                btnDownload.innerHTML = textAwal; btnDownload.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
