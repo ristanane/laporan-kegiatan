@@ -16,7 +16,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f5f3ef; 
+            background-color: #f5f3ef; /* Warm Sand Palette */
             color: #2c3e35; 
             padding: 24px 12px;
             display: flex; flex-direction: column; align-items: center; gap: 20px;
@@ -34,6 +34,7 @@
         .grid-kembar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .grup-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; position: relative; }
         .label-style { font-size: 10px; font-weight: 700; color: #687c72; text-transform: uppercase; letter-spacing: 0.5px; }
+        .char-counter { font-size: 9px; color: #8fa196; align-self: flex-end; margin-top: -2px; }
         
         input[type="text"], input[type="date"], input[type="email"], input[type="password"], select {
             width: 100%; padding: 10px 12px; font-size: 13px; background: #fcfbfa;
@@ -65,8 +66,9 @@
         .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #709a82; }
         .header-poster { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ebd9c5; padding-bottom: 12px; margin-bottom: 16px; }
         .header-left { display: flex; align-items: center; gap: 10px; }
-        .logo-box-universal { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .logo-box-universal { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; }
         .logo-box-universal svg { width: 18px; height: 18px; fill: currentColor; }
+        .logo-box-universal img { width: 100%; height: 100%; object-fit: cover; }
         .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; text-transform: uppercase; }
         .subtitle-sekolah { font-size: 9px; color: #709a82; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
         .badge-tanggal { background: #709a82; color: #ffffff; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
@@ -99,11 +101,13 @@
         .konten-kegiatan-render.mode-tiga-kolom .render-deskripsi-kegiatan { font-size: 8px; }
         .konten-kegiatan-render.mode-tunggal .teks-kegiatan-wrapper { display: flex; flex-direction: column; gap: 6px; }
         
-        .render-nama-kegiatan { font-size: 11px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
+        .render-nama-kegiatan { font-size: 11px; font-weight: 700; color: #1e2d24; line-height: 1.35; text-align: left; }
         .render-bingkai-foto { width: 100%; aspect-ratio: 4 / 3; background: #ffffff; border: 1px solid #e6dfd5; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
         .render-bingkai-foto svg { width: 20px; height: 20px; color: #cbd5e1; }
-        .render-deskripsi-kegiatan { font-size: 9px; color: #5c6e63; line-height: 1.4; text-align: justify; }
+        
+        /* KOREKSI TERBARU: DIDESAIN RATA KIRI TOTAL */
+        .render-deskripsi-kegiatan { font-size: 9px; color: #5c6e63; line-height: 1.4; text-align: left; white-space: normal; word-break: break-word; }
 
         .footer-poster { border-top: 1px solid #ebd9c5; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8px; color: #8fa196; margin-top: 16px; }
         .watermark-kecil { font-size: 8px; color: #9ab0a4; font-weight: 500; font-family: monospace; letter-spacing: 0.3px; }
@@ -159,14 +163,13 @@
             </div>
             
             <div id="wrapperLupaPass" class="link-lupa-pass">Lupa Password?</div>
-            
             <div id="errorMsg" class="error-msg">Email atau Password salah!</div>
             
             <button type="button" id="btnMainAuth" class="btn-auth">Masuk</button>
             <div id="btnToggleView" class="link-pindah-view">Belum punya akun? Daftar Baru</div>
             
             <a id="btnWaAdmin" class="btn-wa-admin" target="_blank" style="display: none;">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.948h.003c4.368 0 7.927-3.558 7.929-7.93a7.828 7.828 0 0 0-2.33-5.54M7.993 14.566c-1.208 0-2.395-.325-3.433-.94l-.245-.145-2.553.669.68-2.486-.158-.251a6.56 6.56 0 0 1-1.005-3.413c0-3.6 2.933-6.525 6.533-6.525a6.53 6.53 0 0 1 4.628 1.914 6.54 6.54 0 0 1 1.912 4.629c-.002 3.61-2.935 6.525-6.535 6.525zM11.59 10.02c-.196-.099-1.162-.574-1.344-.64-.182-.065-.315-.099-.445.099-.133.197-.513.64-.629.775-.114.135-.227.15-.423.05-.197-.1-.832-.307-1.584-.977-.585-.521-.98-1.167-1.096-1.366-.116-.2-.014-.308.085-.407.09-.089.196-.23.295-.346.099-.115.133-.197.198-.329.065-.134.034-.251-.015-.35-.049-.099-.445-1.076-.61-1.472-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.163-.474 1.328-.931.164-.457.164-.849.115-.931-.049-.08-.182-.128-.379-.227z"/></svg>
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.948h.003c4.368 0 7.927-3.558 7.929-7.93a7.828 7.828 0 0 0-2.33-5.54M7.993 14.566c-1.208 0-2.395-.325-3.433-.94 l-.245-.145-2.553.669.68-2.486-.158-.251a6.56 6.56 0 0 1-1.005-3.413c0-3.6 2.933-6.525 6.533-6.525a6.53 6.53 0 0 1 4.628 1.914 6.54 6.54 0 0 1 1.912 4.629c-.002 3.61-2.935 6.525-6.535 6.525zM11.59 10.02c-.196-.099-1.162-.574-1.344-.64-.182-.065-.315-.099-.445.099-.133.197-.513.64-.629.775-.114.135-.227.15-.423.05-.197-.1-.832-.307-1.584-.977-.585-.521-.98-1.167-1.096-1.366-.116-.2-.014-.308.085-.407.09-.089.196-.23.295-.346.099-.115.133-.197.198-.329.065-.134.034-.251-.015-.35-.049-.099-.445-1.076-.61-1.472-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.163-.474 1.328-.931.164-.457.164-.849.115-.931-.049-.08-.182-.128-.379-.227z"/></svg>
                 Hubungi Admin WhatsApp
             </a>
         </div>
@@ -175,7 +178,6 @@
     <div class="wrapper">
         <div class="panel-input">
             <button type="button" id="btnLogout" class="btn-logout">LOGOUT</button>
-            
             <button type="button" id="btnResetForm" class="btn-reset-form">RESET FORM</button>
             
             <h2 class="title-main">Laporan Kegiatan Harian</h2>
@@ -183,7 +185,12 @@
 
             <div class="grup-field">
                 <label class="label-style">Nama Instansi / Kantor / Sekolah</label>
-                <input type="text" id="inputInstansi" value="DINAS PENDIDIKAN">
+                <input type="text" id="inputInstansi" placeholder="Contoh: DINAS PENDIDIKAN">
+            </div>
+
+            <div class="grup-field">
+                <label class="label-style">Logo Instansi Kustom (Opsional - PNG/JPG)</label>
+                <input type="file" id="inputLogoKustom" accept="image/*">
             </div>
 
             <div class="grid-kembar">
@@ -192,8 +199,8 @@
                     <input type="date" id="inputTanggal">
                 </div>
                 <div class="grup-field">
-                    <label class="label-style">Nama Pembuat (Nama Lengkap)</label>
-                    <input type="text" id="inputPetugas" value="Ristanane">
+                    <label class="label-style">Nama Pembuat</label>
+                    <input type="text" id="inputPetugas" placeholder="Nama Lengkap Anda">
                 </div>
             </div>
 
@@ -231,11 +238,11 @@
             <div class="top-accent-line"></div>
             <div class="header-poster">
                 <div class="header-left">
-                    <div class="logo-box-universal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <div class="logo-box-universal" id="posterLogoContainer">
+                        <svg id="defaultLogoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     </div>
                     <div>
-                        <div class="title-sekolah" id="viewInstansi">DINAS PENDIDIKAN</div>
+                        <div class="title-sekolah" id="viewInstansi">NAMA INSTANSI</div>
                         <div class="subtitle-sekolah">LAPORAN KEGIATAN HARIAN</div>
                     </div>
                 </div>
@@ -246,7 +253,7 @@
 
             <div class="footer-poster">
                 <div class="watermark-kecil">&copy; ristanane</div>
-                <div id="viewPetugas" class="nama-petugas-bold">Ristanane</div>
+                <div id="viewPetugas" class="nama-petugas-bold">Nama Pembuat</div>
             </div>
         </div>
     </div>
@@ -296,7 +303,6 @@
 
         let modePortalSekarang = "login";
         
-        // SILAKAN GANTI NOMOR WA ANDA DI SINI (Gunakan kode negara 62)
         const NOMOR_WA_ADMIN = "628970093293"; 
 
         togglePassword.addEventListener('click', () => {
@@ -304,7 +310,6 @@
             authPassword.setAttribute('type', tipeSekarang === 'password' ? 'text' : 'password');
         });
 
-        // ACTION BUTTON LUPA PASSWORD OTOMATIS
         wrapperLupaPass.addEventListener('click', () => {
             const email = authEmail.value.trim();
             if(!email) {
@@ -358,11 +363,8 @@
                         if (dataUser.status === "pending") {
                             errorMsg.innerText = "Akun Anda berstatus PENDING. Silakan hubungi Admin untuk aktivasi.";
                             errorMsg.style.display = "block";
-                            
-                            // Tampilkan tombol WA Admin
                             btnWaAdmin.href = `https://wa.me/${NOMOR_WA_ADMIN}?text=Halo%20Admin,%20saya%20sudah%20daftar%20akun%20laporan%20dengan%20email%20${user.email}.%20Mohon%20bantu%20aktivasi%20ya.`;
                             btnWaAdmin.style.display = "inline-flex";
-                            
                             await signOut(auth);
                             return;
                         }
@@ -381,11 +383,8 @@
                 } catch (e) {
                     errorMsg.innerText = "Masa aktif akun habis! Hubungi admin untuk perpanjangan masa aktif.";
                     errorMsg.style.display = "block";
-                    
-                    // Tampilkan tombol WA Admin khusus Expired
                     btnWaAdmin.href = `https://wa.me/${NOMOR_WA_ADMIN}?text=Halo%20Admin,%20masa%20aktif%20akun%20laporan%20saya%20(${user.email})%20sudah%20habis.%20Saya%20ingin%20perpanjang%20sewa.`;
                     btnWaAdmin.style.display = "inline-flex";
-                    
                     await signOut(auth);
                 }
             } else {
@@ -445,20 +444,19 @@
         let cropperInstance = null;
         let slotAktifDipotong = null;
 
-        const dataKosongPabrik = [
-            { nama: "Pendampingan Program Kerja", desc: "Melakukan monitoring berkas harian.", foto: "" },
-            { nama: "Rapat Koordinasi Tim", desc: "Membahas evaluasi kegiatan bersama.", foto: "" },
-            { nama: "Penataan Dokumentasi", desc: "Merapikan arsip laporan fisik.", foto: "" },
-            { nama: "Penyusunan LPJ", desc: "", foto: "" },
-            { nama: "Slot 5", desc: "", foto: "" },
-            { nama: "Slot 6", desc: "", foto: "" },
-            { nama: "Slot 7", desc: "", foto: "" },
-            { nama: "Slot 8", desc: "", foto: "" },
-            { nama: "Slot 9", desc: "", foto: "" },
-            { nama: "Slot 10", desc: "", foto: "" }
+        // KOREKSI: BANK DATA SEKARANG KOSONG AGAR PLACEHOLDER BERFUNGSI SEMPURNA
+        let dataDefault = [
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" },
+            { nama: "", desc: "", foto: "" }
         ];
-
-        let dataDefault = JSON.parse(JSON.stringify(dataKosongPabrik));
 
         const inputInstansi = document.getElementById('inputInstansi');
         const viewInstansi = document.getElementById('viewInstansi');
@@ -476,10 +474,21 @@
         const selectJumlahKegiatan = document.getElementById('selectJumlahKegiatan');
         const selectTemaWarna = document.getElementById('selectTemaWarna');
         const templateLaporan = document.getElementById('templateLaporan');
+        const inputLogoKustom = document.getElementById('inputLogoKustom');
+        const posterLogoContainer = document.getElementById('posterLogoContainer');
 
-        // FITUR PRESTISE: AUTO LOAD MEMORI DATA DARI LOCAL STORAGE
-        if(localStorage.getItem('ristanane_instansi')) inputInstansi.value = localStorage.getItem('ristanane_instansi');
-        if(localStorage.getItem('ristanane_petugas')) inputPetugas.value = localStorage.getItem('ristanane_petugas');
+        // PRESTISE SYSTEM: AUTO LOAD MEMORI LOCAL STORAGE
+        if(localStorage.getItem('ristanane_instansi')) {
+            inputInstansi.value = localStorage.getItem('ristanane_instansi');
+            viewInstansi.innerText = inputInstansi.value.trim().toUpperCase();
+        }
+        if(localStorage.getItem('ristanane_petugas')) {
+            inputPetugas.value = localStorage.getItem('ristanane_petugas');
+            viewPetugas.innerText = inputPetugas.value.trim();
+        }
+        if(localStorage.getItem('ristanane_logo_b64')) {
+            posterLogoContainer.innerHTML = `<img src="${localStorage.getItem('ristanane_logo_b64')}">`;
+        }
         if(localStorage.getItem('ristanane_jumlah')) {
             jumlahKegiatanAktif = parseInt(localStorage.getItem('ristanane_jumlah'));
             selectJumlahKegiatan.value = jumlahKegiatanAktif;
@@ -497,8 +506,6 @@
         const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
-        viewInstansi.innerText = inputInstansi.value.trim().toUpperCase() || "NAMA INSTANSI";
-        viewPetugas.innerText = inputPetugas.value.trim() || "-";
 
         inputInstansi.addEventListener('input', (e) => { 
             const val = e.target.value.trim().toUpperCase();
@@ -507,8 +514,21 @@
         });
         inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
         inputPetugas.addEventListener('input', (e) => { 
-            viewPetugas.innerText = e.target.value.trim() || "-"; 
+            viewPetugas.innerText = e.target.value.trim() || "Nama Pembuat"; 
             localStorage.setItem('ristanane_petugas', e.target.value);
+        });
+
+        inputLogoKustom.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const base64Logo = evt.target.result;
+                    posterLogoContainer.innerHTML = `<img src="${base64Logo}">`;
+                    localStorage.setItem('ristanane_logo_b64', base64Logo);
+                };
+                reader.readAsDataURL(file);
+            }
         });
 
         selectTemaWarna.addEventListener('change', function(e) {
@@ -532,12 +552,17 @@
             localStorage.setItem('ristanane_text_cache', JSON.stringify(ringkasan));
         }
 
-        // FITUR BARU: TOMBOL KOSONGKAN RESET FORM
         btnResetForm.addEventListener('click', function() {
-            if(confirm("Apakah Anda yakin ingin mengosongkan/reset seluruh teks laporan harian ini?")) {
+            if(confirm("Apakah Anda yakin ingin mengosongkan/reset seluruh teks laporan harian ini? (Logo tidak ikut terhapus)")) {
                 localStorage.removeItem('ristanane_text_cache');
-                dataDefault = JSON.parse(JSON.stringify(dataKosongPabrik));
+                dataDefault = dataDefault.map(() => ({ nama: "", desc: "", foto: "" }));
                 renderFormDanPreview();
+                viewInstansi.innerText = "NAMA INSTANSI";
+                viewPetugas.innerText = "Nama Pembuat";
+                inputInstansi.value = "";
+                inputPetugas.value = "";
+                localStorage.removeItem('ristanane_instansi');
+                localStorage.removeItem('ristanane_petugas');
             }
         });
 
@@ -556,12 +581,24 @@
             for (let i = 1; i <= jumlahKegiatanAktif; i++) {
                 const def = dataDefault[i-1];
 
+                // KOREKSI: PENGATURAN LOGIC PLACEHOLDER BERBEDA TIAP SLOT
+                let placeholderNama = `Kegiatan ${i}`;
+                let placeholderDesc = `Deskripsi Singkat (Opsional)`;
+                
+                if (i === 1) {
+                    placeholderNama = "Contoh: Pendampingan Program Kerja";
+                    placeholderDesc = "Contoh: Melakukan monitoring berkas harian.";
+                }
+
                 const formGroup = document.createElement('div');
                 formGroup.className = "box-kegiatan-input";
                 formGroup.innerHTML = `
                     <div class="text-kegiatan-id">SLOT KEGIATAN #${i}</div>
-                    <div class="grup-field"><input type="text" id="keg-nama-${i}" value="${def.nama}"></div>
-                    <div class="grup-field"><input type="text" id="keg-desc-${i}" placeholder="Deskripsi Singkat (Opsional)" value="${def.desc}"></div>
+                    <div class="grup-field"><input type="text" id="keg-nama-${i}" placeholder="${placeholderNama}" value="${def.nama}"></div>
+                    <div class="grup-field">
+                        <input type="text" id="keg-desc-${i}" maxlength="100" placeholder="${placeholderDesc}" value="${def.desc}">
+                        <span class="char-counter" id="char-count-${i}">${def.desc.length}/100</span>
+                    </div>
                     <div class="grup-field"><input type="file" id="keg-foto-${i}" accept="image/*"></div>
                 `;
                 formContainer.appendChild(formGroup);
@@ -575,13 +612,13 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         </div>
                         <div class="teks-kegiatan-wrapper">
-                            <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama}</div>
+                            <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama || `Kegiatan ${i}`}</div>
                             <div class="render-deskripsi-kegiatan" id="pv-desc-${i}">${def.desc}</div>
                         </div>
                     `;
                 } else {
                     viewRow.innerHTML = `
-                        <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama}</div>
+                        <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama || `Kegiatan ${i}`}</div>
                         <div class="render-bingkai-foto" id="pv-box-foto-${i}">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         </div>
@@ -597,10 +634,13 @@
                 });
 
                 document.getElementById(`keg-desc-${i}`).addEventListener('input', (e) => {
-                    const txt = e.target.value.trim();
-                    dataDefault[i-1].desc = e.target.value;
-                    document.getElementById(`pv-desc-${i}`).style.display = txt === "" ? 'none' : 'block';
-                    document.getElementById(`pv-desc-${i}`).innerText = txt;
+                    const txt = e.target.value;
+                    document.getElementById(`char-count-${i}`).innerText = `${txt.length}/100`;
+                    
+                    dataDefault[i-1].desc = txt;
+                    const pvDesc = document.getElementById(`pv-desc-${i}`);
+                    pvDesc.style.display = txt.trim() === "" ? 'none' : 'block';
+                    pvDesc.innerText = txt;
                     simpanTeksKeStorage();
                 });
 
@@ -620,6 +660,7 @@
                 });
                 
                 if(def.foto) { document.getElementById(`pv-box-foto-${i}`).innerHTML = `<img src="${def.foto}">`; }
+                document.getElementById(`pv-desc-${i}`).style.display = def.desc.trim() === "" ? 'none' : 'block';
             }
         }
 
