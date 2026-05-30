@@ -16,7 +16,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f5f3ef; /* Warm Sand Palette */
+            background-color: #f5f3ef; 
             color: #2c3e35; 
             padding: 24px 12px;
             display: flex; flex-direction: column; align-items: center; gap: 20px;
@@ -62,30 +62,54 @@
             font-size: 10px; font-weight: 700; cursor: pointer; float: right; margin-top: -30px;
         }
 
-        /* PREVIEW POSTER COLORFUL (SAGE & SAND PASTEL DUAL TONE) */
+        /* PREVIEW POSTER BASE */
         #templateLaporan {
             width: 440px; height: auto; background: #fbf9f6; padding: 24px; border-radius: 4px;
             box-shadow: 0 8px 24px rgba(44, 62, 53, 0.05); border: 1px solid #e6dfd5;
             position: relative; display: flex; flex-direction: column; overflow: hidden;
+            transition: background 0.3s;
         }
-        .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #709a82; }
+        .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #709a82; transition: background 0.3s; }
         .header-poster { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ebd9c5; padding-bottom: 12px; margin-bottom: 16px; }
         .header-left { display: flex; align-items: center; gap: 10px; }
-        .logo-sekolah-box { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-        .logo-sekolah-box svg { width: 18px; height: 18px; fill: currentColor; }
+        .logo-box-universal { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.3s; }
+        .logo-box-universal svg { width: 18px; height: 18px; fill: currentColor; }
         .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; text-transform: uppercase; }
-        .subtitle-sekolah { font-size: 9px; color: #709a82; font-weight: 700; letter-spacing: 0.5px; }
-        .badge-tanggal { background: #709a82; color: #ffffff; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+        .subtitle-sekolah { font-size: 9px; color: #709a82; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.3s; }
+        .badge-tanggal { background: #709a82; color: #ffffff; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; transition: background 0.3s; }
 
+        /* RESPONSIVE SMART GRID SYSTEM */
         .konten-kegiatan-render { display: flex; flex-direction: column; gap: 16px; }
-        .konten-kegiatan-render.mode-multi { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
-        .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; background: #ffffff; border: 1px solid #ebd9c5; padding: 10px; border-radius: 12px; box-shadow: 0 2px 6px rgba(112,154,130,0.02); }
-
         .konten-kegiatan-render.mode-tunggal .baris-kegiatan { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: start; padding: 12px; }
+        .konten-kegiatan-render.mode-dua-kolom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+        .konten-kegiatan-render.mode-tiga-kolom { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px 8px; }
+        
+        .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; background: #ffffff; border: 1px solid #ebd9c5; padding: 10px; border-radius: 12px; box-shadow: 0 2px 6px rgba(112,154,130,0.02); overflow: hidden; transition: all 0.3s; }
+
+        /* SKEMA WARNA 1: COLORFUL PASTEL (DEFAULT) */
+        #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+1) { background: #f1f8fd; border-color: #d1e9f8; }
+        #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+2) { background: #f1f8f3; border-color: #cfebd7; }
+        #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+3) { background: #fffcf1; border-color: #fceec5; }
+        #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+4) { background: #fff4f6; border-color: #fcd4dc; }
+
+        /* SKEMA WARNA 2: FORMAL MONOKROM */
+        #templateLaporan.tema-formal { background: #ffffff; border-color: #d1d5db; }
+        #templateLaporan.tema-formal .top-accent-line { background: #1f2937; }
+        #templateLaporan.tema-formal .logo-box-universal { background: #f3f4f6; border-color: #d1d5db; color: #1f2937; }
+        #templateLaporan.tema-formal .subtitle-sekolah { color: #4b5563; }
+        #templateLaporan.tema-formal .badge-tanggal { background: #1f2937; }
+        #templateLaporan.tema-formal .header-poster { border-bottom-color: #d1d5db; }
+        #templateLaporan.tema-formal .baris-kegiatan { background: #f9fafb; border-color: #e5e7eb; }
+        #templateLaporan.tema-formal .footer-poster { border-top-color: #e5e7eb; }
+
+        /* PENYESUAIAN UKURAN TEXT KETIKA JADI 3 KOLOM AGAR TETAP MUAT */
+        .konten-kegiatan-render.mode-tiga-kolom .render-nama-kegiatan { font-size: 9.5px; }
+        .konten-kegiatan-render.mode-tiga-kolom .render-deskripsi-kegiatan { font-size: 8px; }
+
         .konten-kegiatan-render.mode-tunggal .teks-kegiatan-wrapper { display: flex; flex-direction: column; gap: 6px; }
         .render-nama-kegiatan { font-size: 11px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
         
-        .render-bingkai-foto { width: 100%; aspect-ratio: 4 / 3; background: #fcfbfa; border: 1px solid #e6dfd5; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .render-bingkai-foto { width: 100%; aspect-ratio: 4 / 3; background: #ffffff; border: 1px solid #e6dfd5; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
         .render-bingkai-foto svg { width: 20px; height: 20px; color: #cbd5e1; }
         .render-deskripsi-kegiatan { font-size: 9px; color: #5c6e63; line-height: 1.4; text-align: justify; }
@@ -94,33 +118,26 @@
         .watermark-kecil { font-size: 8px; color: #9ab0a4; font-weight: 500; font-family: monospace; letter-spacing: 0.3px; }
         .nama-petugas-bold { font-weight: 700; color: #1e2d24; font-size: 9.5px; }
 
-        /* JENDELA PORTAL MULTI-WARNA */
+        /* JENDELA PORTAL */
         .lock-screen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(135deg, #f4f7f5 0%, #f5f3ef 100%); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 99999; padding: 20px;
-            transition: all 0.4s ease;
+            align-items: center; justify-content: center; z-index: 99999; padding: 20px; transition: all 0.4s ease;
         }
         .lock-card {
             background: #ffffff; width: 100%; max-width: 360px; padding: 30px 24px;
             border-radius: 24px; border: 1px solid #e2eaf0; text-align: center;
-            box-shadow: 0 10px 30px rgba(112, 154, 130, 0.08);
-            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(112, 154, 130, 0.08); transition: all 0.4s ease;
         }
-        .lock-icon { 
-            width: 50px; height: 50px; background: #e8f0ec; color: #709a82; 
-            display: inline-flex; align-items: center; justify-content: center; 
-            border-radius: 50%; margin-bottom: 16px; transition: all 0.4s ease;
-        }
+        .lock-icon { width: 50px; height: 50px; background: #e8f0ec; color: #709a82; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px; transition: all 0.4s ease; }
         .lock-title { font-size: 18px; font-weight: 700; color: #1e2d24; margin-bottom: 6px; }
         .lock-desc { font-size: 11px; color: #687c72; margin-bottom: 20px; line-height: 1.5; }
         .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.3s; }
         .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
         .link-pindah-view { color: #52796f; font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 16px; }
 
-        /* MULTI-WARNA UNTUK HALAMAN REGISTER (NAVY BLUE THEME) */
         .lock-screen.mode-daftar-style { background: linear-gradient(135deg, #1b2a47 0%, #2e4369 100%); }
-        .lock-screen.mode-daftar-style .lock-card { border-color: #34496e; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .lock-screen.mode-daftar-style .lock-card { border-color: #34496e; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .lock-screen.mode-daftar-style .lock-icon { background: #e1e9f5; color: #234475; }
         .lock-screen.mode-daftar-style .lock-title { color: #111a2e; }
         .lock-screen.mode-daftar-style .btn-auth { background: #234475; }
@@ -181,25 +198,34 @@
                     <input type="date" id="inputTanggal">
                 </div>
                 <div class="grup-field">
-                    <label class="label-style">Nama Pembuat</label>
-                    <input type="text" id="inputPetugas" value="Tim Dokumentasi">
+                    <label class="label-style">Nama Pembuat (Nama Lengkap)</label>
+                    <input type="text" id="inputPetugas" value="Ristanane">
                 </div>
             </div>
 
-            <div class="grup-field">
-                <label class="label-style">Jumlah Kegiatan Harian (Maks 10)</label>
-                <select id="selectJumlahKegiatan">
-                    <option value="1" selected>1 Kegiatan</option>
-                    <option value="2">2 Kegiatan</option>
-                    <option value="3">3 Kegiatan</option>
-                    <option value="4">4 Kegiatan</option>
-                    <option value="5">5 Kegiatan</option>
-                    <option value="6">6 Kegiatan</option>
-                    <option value="7">7 Kegiatan</option>
-                    <option value="8">8 Kegiatan</option>
-                    <option value="9">9 Kegiatan</option>
-                    <option value="10">10 Kegiatan</option>
-                </select>
+            <div class="grid-kembar">
+                <div class="grup-field">
+                    <label class="label-style">Jumlah Kegiatan (Maks 10)</label>
+                    <select id="selectJumlahKegiatan">
+                        <option value="1" selected>1 Kegiatan</option>
+                        <option value="2">2 Kegiatan</option>
+                        <option value="3">3 Kegiatan</option>
+                        <option value="4">4 Kegiatan</option>
+                        <option value="5">5 Kegiatan</option>
+                        <option value="6">6 Kegiatan</option>
+                        <option value="7">7 Kegiatan</option>
+                        <option value="8">8 Kegiatan</option>
+                        <option value="9">9 Kegiatan</option>
+                        <option value="10">10 Kegiatan</option>
+                    </select>
+                </div>
+                <div class="grup-field">
+                    <label class="label-style">Mode Warna Poster</label>
+                    <select id="selectTemaWarna">
+                        <option value="colorful" selected>Aesthetic Colorful</option>
+                        <option value="formal">Formal Monokrom</option>
+                    </select>
+                </div>
             </div>
 
             <div id="formKegiatanContainer"></div>
@@ -207,12 +233,12 @@
         </div>
 
         <span class="label-style" style="align-self: flex-start;">Pratinjau Hasil Cetak:</span>
-        <div id="templateLaporan">
+        <div id="templateLaporan" class="tema-colorful">
             <div class="top-accent-line"></div>
             <div class="header-poster">
                 <div class="header-left">
-                    <div class="logo-sekolah-box">
-                        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4l7 3.82 7-3.82v-4L12 17L5 13.18z"/></svg>
+                    <div class="logo-box-universal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     </div>
                     <div>
                         <div class="title-sekolah" id="viewInstansi">DINAS PENDIDIKAN</div>
@@ -226,7 +252,7 @@
 
             <div class="footer-poster">
                 <div class="watermark-kecil">&copy; ristanane</div>
-                <div id="viewPetugas" class="nama-petugas-bold">Tim Dokumentasi</div>
+                <div id="viewPetugas" class="nama-petugas-bold">Ristanane</div>
             </div>
         </div>
     </div>
@@ -311,17 +337,14 @@
 
                     if (snapshot.exists()) {
                         const dataUser = snapshot.val();
-                        
                         if (dataUser.status === "pending") {
                             errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
                             errorMsg.style.display = "block";
                             await signOut(auth);
                             return;
                         }
-
                         const tglExpired = new Date(dataUser.expired);
                         const tglHariIni = new Date();
-
                         if (dataUser.status === "aktif" && tglHariIni <= tglExpired) {
                             lockScreen.style.display = "none";
                         } else {
@@ -366,13 +389,11 @@
                     .then(async (userCredential) => {
                         const u = userCredential.user;
                         const emailKey = u.email.toLowerCase().replace(/\./g, ',');
-                        
                         await set(ref(rtdb, 'users/' + emailKey), {
                             email: u.email,
                             status: "pending",
                             expired: "2026-01-01"
                         });
-
                         btnMainAuth.innerText = "Buat Akun";
                         errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
                         errorMsg.style.display = "block";
@@ -396,17 +417,18 @@
         let cropperInstance = null;
         let slotAktifDipotong = null;
 
-        const dataDefault = [
-            { nama: "Pendampingan Program Kerja", desc: "Melakukan monitoring berkas di ruang utama.", foto: "" },
-            { nama: "Rapat Koordinasi Internal", desc: "Membahas evaluasi program harian bersama tim.", foto: "" },
-            { nama: "Penataan Dokumentasi Sektor", desc: "Merapikan arsip laporan harian fisik.", foto: "" },
-            { nama: "Penyusunan Laporan Pertanggungjawaban", desc: "", foto: "" },
-            { nama: "Kegiatan Slot 5", desc: "", foto: "" },
-            { nama: "Kegiatan Slot 6", desc: "", foto: "" },
-            { nama: "Kegiatan Slot 7", desc: "", foto: "" },
-            { nama: "Kegiatan Slot 8", desc: "", foto: "" },
-            { nama: "Kegiatan Slot 9", desc: "", foto: "" },
-            { nama: "Kegiatan Slot 10", desc: "", foto: "" }
+        // Bank Data Memory Utama
+        let dataDefault = [
+            { nama: "Pendampingan Program Kerja", desc: "Melakukan monitoring berkas harian.", foto: "" },
+            { nama: "Rapat Koordinasi Tim", desc: "Membahas evaluasi kegiatan bersama.", foto: "" },
+            { nama: "Penataan Dokumentasi", desc: "Merapikan arsip laporan fisik.", foto: "" },
+            { nama: "Penyusunan LPJ", desc: "", foto: "" },
+            { nama: "Slot 5", desc: "", foto: "" },
+            { nama: "Slot 6", desc: "", foto: "" },
+            { nama: "Slot 7", desc: "", foto: "" },
+            { nama: "Slot 8", desc: "", foto: "" },
+            { nama: "Slot 9", desc: "", foto: "" },
+            { nama: "Slot 10", desc: "", foto: "" }
         ];
 
         const inputInstansi = document.getElementById('inputInstansi');
@@ -422,14 +444,52 @@
         const imageToCrop = document.getElementById('imageToCrop');
         const btnSaveCrop = document.getElementById('btnSaveCrop');
         const selectJumlahKegiatan = document.getElementById('selectJumlahKegiatan');
+        const selectTemaWarna = document.getElementById('selectTemaWarna');
+        const templateLaporan = document.getElementById('templateLaporan');
+
+        // FITUR PRESTISE 1: AUTO LOAD MEMORI DATA DARI LOCAL STORAGE HP USER
+        if(localStorage.getItem('ristanane_instansi')) inputInstansi.value = localStorage.getItem('ristanane_instansi');
+        if(localStorage.getItem('ristanane_petugas')) inputPetugas.value = localStorage.getItem('ristanane_petugas');
+        if(localStorage.getItem('ristanane_jumlah')) {
+            jumlahKegiatanAktif = parseInt(localStorage.getItem('ristanane_jumlah'));
+            selectJumlahKegiatan.value = jumlahKegiatanAktif;
+        }
+        if(localStorage.getItem('ristanane_text_cache')) {
+            const cacheTeks = JSON.parse(localStorage.getItem('ristanane_text_cache'));
+            cacheTeks.forEach((item, idx) => {
+                if(dataDefault[idx]) {
+                    dataDefault[idx].nama = item.nama;
+                    dataDefault[idx].desc = item.desc;
+                }
+            });
+        }
 
         const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
+        viewInstansi.innerText = inputInstansi.value.trim().toUpperCase() || "NAMA INSTANSI";
+        viewPetugas.innerText = inputPetugas.value.trim() || "-";
 
-        inputInstansi.addEventListener('input', (e) => { viewInstansi.innerText = e.target.value.trim().toUpperCase() || "NAMA INSTANSI"; });
+        // EVENT LISTENER FORM UTAMA SINKRONISASI & AUTO-SAVE
+        inputInstansi.addEventListener('input', (e) => { 
+            const val = e.target.value.trim().toUpperCase();
+            viewInstansi.innerText = val || "NAMA INSTANSI"; 
+            localStorage.setItem('ristanane_instansi', e.target.value);
+        });
         inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
-        inputPetugas.addEventListener('input', (e) => { viewPetugas.innerText = e.target.value.trim() || "-"; });
+        inputPetugas.addEventListener('input', (e) => { 
+            viewPetugas.innerText = e.target.value.trim() || "-"; 
+            localStorage.setItem('ristanane_petugas', e.target.value);
+        });
+
+        // FITUR PRESTISE 2: SAKELAR INTEGRASI TEMA WARNA (COLORFUL VS FORMAL MONOKROM)
+        selectTemaWarna.addEventListener('change', function(e) {
+            if(e.target.value === "formal") {
+                templateLaporan.className = "tema-formal";
+            } else {
+                templateLaporan.className = "tema-colorful";
+            }
+        });
 
         function formatDanSetTanggal(dateString) {
             if(!dateString) return;
@@ -439,17 +499,27 @@
 
         selectJumlahKegiatan.addEventListener('change', function(e) {
             jumlahKegiatanAktif = parseInt(e.target.value);
+            localStorage.setItem('ristanane_jumlah', jumlahKegiatanAktif);
             renderFormDanPreview();
         });
+
+        // RE-SAVE TEXT MEMORY UTAMA
+        function simpanTeksKeStorage() {
+            const ringkasan = dataDefault.map(item => ({ nama: item.nama, desc: item.desc }));
+            localStorage.setItem('ristanane_text_cache', JSON.stringify(ringkasan));
+        }
 
         function renderFormDanPreview() {
             formContainer.innerHTML = '';
             viewContainer.innerHTML = '';
 
+            // SMART GRID SYSTEM PENENTU SUSUNAN LAYOUT POSTER
             if (jumlahKegiatanAktif === 1) {
                 viewContainer.className = "konten-kegiatan-render mode-tunggal";
+            } else if (jumlahKegiatanAktif >= 2 && jumlahKegiatanAktif <= 6) {
+                viewContainer.className = "konten-kegiatan-render mode-dua-kolom";
             } else {
-                viewContainer.className = "konten-kegiatan-render mode-multi";
+                viewContainer.className = "konten-kegiatan-render mode-tiga-kolom";
             }
 
             for (let i = 1; i <= jumlahKegiatanAktif; i++) {
@@ -471,7 +541,7 @@
                 if (jumlahKegiatanAktif === 1) {
                     viewRow.innerHTML = `
                         <div class="render-bingkai-foto" id="pv-box-foto-${i}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         </div>
                         <div class="teks-kegiatan-wrapper">
                             <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama}</div>
@@ -482,16 +552,18 @@
                     viewRow.innerHTML = `
                         <div class="render-nama-kegiatan" id="pv-nama-${i}">${def.nama}</div>
                         <div class="render-bingkai-foto" id="pv-box-foto-${i}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         </div>
                         <div class="render-deskripsi-kegiatan" id="pv-desc-${i}">${def.desc}</div>
                     `;
                 }
                 viewContainer.appendChild(viewRow);
 
+                // EVENT INTERAKSI FORM KE PREVIEW LIVE + MEMORY UPDATE
                 document.getElementById(`keg-nama-${i}`).addEventListener('input', (e) => {
                     document.getElementById(`pv-nama-${i}`).innerText = e.target.value.trim() || `Kegiatan ${i}`;
                     dataDefault[i-1].nama = e.target.value;
+                    simpanTeksKeStorage();
                 });
 
                 document.getElementById(`keg-desc-${i}`).addEventListener('input', (e) => {
@@ -499,6 +571,7 @@
                     dataDefault[i-1].desc = e.target.value;
                     document.getElementById(`pv-desc-${i}`).style.display = txt === "" ? 'none' : 'block';
                     document.getElementById(`pv-desc-${i}`).innerText = txt;
+                    simpanTeksKeStorage();
                 });
 
                 document.getElementById(`keg-foto-${i}`).addEventListener('change', function(e) {
@@ -520,10 +593,12 @@
             }
         }
 
+        // FITUR PRESTISE 3: CROPPER + ENGINE COMPRESS BERSIH KAPASITAS (TAJAM TAPI SUPER RINGAN)
         btnSaveCrop.addEventListener('click', function() {
             if (cropperInstance && slotAktifDipotong) {
-                const canvasDipotong = cropperInstance.getCroppedCanvas({ width: 640, height: 480 });
-                const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.9);
+                // Dikunci di resolusi 520x390 agar ukuran file terkompresi otomatis, rendering secepat kilat!
+                const canvasDipotong = cropperInstance.getCroppedCanvas({ width: 520, height: 390 });
+                const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.75); // Kualitas set di 75% murni hemat ram HP
                 dataDefault[slotAktifDipotong-1].foto = base64Gambar;
                 document.getElementById(`pv-box-foto-${slotAktifDipotong}`).innerHTML = `<img src="${base64Gambar}">`;
                 modalCrop.style.display = "none";
@@ -535,11 +610,11 @@
 
         btnDownload.addEventListener('click', function() {
             const textAwal = btnDownload.innerHTML;
-            btnDownload.innerHTML = "Memproses..."; btnDownload.disabled = true;
-            html2canvas(templateLaporan, { scale: 2.5, useCORS: true, allowTaint: true }).then(canvas => {
+            btnDownload.innerHTML = "Memproses Laporan..."; btnDownload.disabled = true;
+            html2canvas(templateLaporan, { scale: 2.2, useCORS: true, allowTaint: true }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `laporan-harian-${inputTanggal.value || 'kegiatan'}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.download = `laporan-${inputTanggal.value || 'harian'}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.92);
                 document.body.appendChild(link); link.click(); document.body.removeChild(link);
                 btnDownload.innerHTML = textAwal; btnDownload.disabled = false;
             }).catch(err => {
