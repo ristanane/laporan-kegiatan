@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Laporan Kegiatan SDN Senden 2</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
-        /* CSS PREMIUM STUDIO - RASIO FOTO 4:3 ANTI-MEMANJANG */
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,25 +25,15 @@
             gap: 20px;
         }
 
-        .wrapper {
-            width: 100%;
-            max-width: 460px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .wrapper { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* PANEL INPUT DATA UTAMA */
+        /* PANEL INPUT */
         .panel-input {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
+            background: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
         }
         .title-main { font-size: 16px; font-weight: 700; color: #0f172a; }
         .subtitle-main { font-size: 11px; color: #64748b; margin-top: 4px; margin-bottom: 16px; }
-        
         .grid-kembar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .grup-field { display: flex; flex-direction: column; gap: 4px; }
         .label-style { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -47,9 +42,7 @@
             width: 100%; padding: 8px 12px; font-size: 13px; background: #f8fafc;
             border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #334155;
         }
-        input:focus { border-color: #2563eb; background: #ffffff; }
-
-        /* Tombol Pilihan Jumlah Kegiatan */
+        
         .wrapper-slot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 2px; margin-bottom: 14px; }
         .btn-pilih-slot {
             padding: 8px; font-size: 13px; font-weight: 600; background: #ffffff;
@@ -57,87 +50,77 @@
         }
         .btn-pilih-slot.aktif { background: #2563eb !important; color: #ffffff !important; border-color: #2563eb !important; }
 
-        /* Wadah Form Isi Kegiatan */
         .box-kegiatan-input {
             background: #f8fafc; padding: 14px; border-radius: 14px; border: 1px solid #e2e8f0;
             margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;
         }
         .text-kegiatan-id { font-size: 10px; font-weight: 700; color: #2563eb; }
-        input[type="file"] { font-size: 11px; color: #64748b; }
+        
+        /* Tombol Pemicu Potong */
+        .btn-crop-trigger {
+            padding: 6px 10px; background: #e0f2fe; color: #0369a1; border: none;
+            border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; align-self: flex-start;
+        }
 
-        /* Tombol Download */
         .btn-unduh-jpg {
             width: 100%; padding: 12px; background: #2563eb; color: #ffffff; border: none;
             border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px;
-            display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+            display: flex; align-items: center; justify-content: center; gap: 6px;
         }
 
-        /* ==================================================== */
-        /* TAMPILAN LEMBAR CETAK (RASIO 4:3 - TIDAK MOLOR)      */
-        /* ==================================================== */
-        .text-pratinjau-tag { font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; align-self: flex-start; }
-        
+        /* ========================================== */
+        /* LEMBAR PREVIEW LAPORAN                     */
+        /* ========================================== */
         #templateLaporan {
-            width: 440px; 
-            height: auto; /* Tinggi dinamis mengikuti isi biar pas */
-            background: #ffffff; 
-            padding: 24px; 
-            border-radius: 2px;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); 
-            border: 1px solid #e2e8f0;
-            position: relative; 
-            display: flex; 
-            flex-direction: column;
-            overflow: hidden; 
-            user-select: none;
+            width: 440px; height: auto; background: #ffffff; padding: 24px; border-radius: 2px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); border: 1px solid #e2e8f0;
+            position: relative; display: flex; flex-direction: column; overflow: hidden;
         }
         .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #2563eb; }
-        
-        /* Header Kop Laporan */
         .header-poster { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 14px; }
         .header-left { display: flex; align-items: center; gap: 10px; }
         .logo-sekolah-box { width: 32px; height: 32px; background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; font-weight: 700; font-size: 10px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-        .title-sekolah { font-size: 13px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
-        .subtitle-sekolah { font-size: 8px; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-top: 1px; }
+        .title-sekolah { font-size: 13px; font-weight: 700; color: #0f172a; }
+        .subtitle-sekolah { font-size: 8px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
         .badge-tanggal { background: #f1f5f9; color: #334155; font-size: 9px; font-weight: 600; padding: 4px 8px; border-radius: 20px; }
 
-        /* Area Render Utama */
         .konten-kegiatan-render { display: flex; flex-direction: column; gap: 14px; }
-        .baris-kegiatan { display: flex; flex-direction: column; gap: 5px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
         .baris-kegiatan:last-child { border-bottom: none; padding-bottom: 0; }
-        
-        /* Judul Kegiatan di Atas Foto */
         .render-nama-kegiatan { font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.35; }
         
-        /* Bingkai Foto Menggunakan Rasio Kamera 4:3 */
+        /* BINGKAI FOTO 4:3 PAS */
         .render-bingkai-foto { 
-            width: 100%; 
-            aspect-ratio: 4 / 3; /* FIX: Mengubah aspek rasio menjadi 4:3 agar lebih kotak & ringkas */
-            background: #f8fafc; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 8px; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            width: 100%; aspect-ratio: 4 / 3; background: #f8fafc; 
+            border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; 
+            display: flex; align-items: center; justify-content: center; 
         }
-        .render-bingkai-foto img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; /* Mengisi penuh frame kotak secara proporsional */
-            background-color: #f8fafc;
-        }
+        .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
         .render-bingkai-foto svg { width: 22px; height: 22px; color: #cbd5e1; }
-        
-        /* Deskripsi di Bawah Foto */
         .render-deskripsi-kegiatan { font-size: 10px; color: #64748b; line-height: 1.4; text-align: justify; }
 
-        /* Footer Kertas */
         .footer-poster { border-top: 1px solid #f1f5f9; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; color: #94a3b8; margin-top: 14px; }
-        .text-petugas-wrap { color: #475569; font-weight: 500; }
         .nama-petugas-bold { font-weight: 700; color: #1e293b; }
+
+        /* ========================================== */
+        /* MODAL POP-UP PEMOTONG GAMBAR (CROPPER)     */
+        /* ========================================== */
+        .modal-crop {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.8); display: none;
+            align-items: center; justify-content: center; z-index: 9999; padding: 16px;
+        }
+        .modal-content {
+            background: #ffffff; width: 100%; max-width: 400px;
+            padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 14px;
+        }
+        .crop-area { width: 100%; max-height: 300px; background: #000; overflow: hidden; border-radius: 8px; }
+        .crop-area img { max-width: 100%; display: block; }
+        .btn-crop-confirm {
+            width: 100%; padding: 10px; background: #2563eb; color: #ffffff;
+            border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -145,7 +128,7 @@
         
         <div class="panel-input">
             <h2 class="title-main">Pembuat Laporan Instan</h2>
-            <p class="subtitle-main">Atur slot data di bawah untuk memproses berkas laporan harian.</p>
+            <p class="subtitle-main">Isi data di bawah, lalu sesuaikan bagian foto dengan menekan tombol geser.</p>
 
             <div class="grid-kembar">
                 <div class="grup-field">
@@ -170,17 +153,12 @@
 
             <div id="formKegiatanContainer"></div>
 
-            <button id="btnDownload" class="btn-unduh-jpg">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                Unduh Laporan (JPG)
-            </button>
+            <button id="btnDownload" class="btn-unduh-jpg">Unduh Laporan (JPG)</button>
         </div>
 
         <span class="text-pratinjau-tag">Pratinjau Hasil Cetak:</span>
-        
         <div id="templateLaporan">
             <div class="top-accent-line"></div>
-            
             <div class="header-poster">
                 <div class="header-left">
                     <div class="logo-sekolah-box">SDN</div>
@@ -196,14 +174,26 @@
 
             <div class="footer-poster">
                 <div>*Digenerate instan via Aplikasi Dokumentasi Sekolah</div>
-                <div class="text-petugas-wrap">Petugas: <span id="viewPetugas" class="nama-petugas-bold">Tim Dokumentasi</span></div>
+                <div>Petugas: <span id="viewPetugas" class="nama-petugas-bold">Tim Dokumentasi</span></div>
             </div>
         </div>
+    </div>
 
+    <div id="modalCrop" class="modal-crop">
+        <div class="modal-content">
+            <div class="text-kegiatan-id" style="font-size:13px;">Geser / Atur Posisi Foto (4:3)</div>
+            <div class="crop-area">
+                <img id="imageToCrop" src="">
+            </div>
+            <button type="button" id="btnSaveCrop" class="btn-crop-confirm">Potong & Pasang Foto</button>
+        </div>
     </div>
 
     <script>
         let jumlahKegiatanAktif = 1;
+        let cropperInstance = null;
+        let slotAktifDipotong = null;
+
         const dataDefault = [
             { nama: "Pendampingan TKA Kelas VI", desc: "Pendampingan persiapan ujian.", foto: "" },
             { nama: "Rapat Koordinasi Guru", desc: "Membahas evaluasi mingguan sekolah.", foto: "" },
@@ -218,32 +208,28 @@
         const formContainer = document.getElementById('formKegiatanContainer');
         const viewContainer = document.getElementById('viewKegiatanList');
         const btnDownload = document.getElementById('btnDownload');
+        
+        const modalCrop = document.getElementById('modalCrop');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const btnSaveCrop = document.getElementById('btnSaveCrop');
 
         const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
 
         inputTanggal.addEventListener('input', (e) => formatDanSetTanggal(e.target.value));
-        inputPetugas.addEventListener('input', (e) => {
-            viewPetugas.innerText = e.target.value.trim() || "-";
-        });
+        inputPetugas.addEventListener('input', (e) => { viewPetugas.innerText = e.target.value.trim() || "-"; });
 
         function formatDanSetTanggal(dateString) {
             if(!dateString) return;
             const opsi = { day: 'numeric', month: 'long', year: 'numeric' };
-            const date = new Date(dateString);
-            viewTanggal.innerText = date.toLocaleDateString('id-ID', opsi);
+            viewTanggal.innerText = new Date(dateString).toLocaleDateString('id-ID', opsi);
         }
 
         function setJumlahKegiatan(jumlah) {
             jumlahKegiatanAktif = jumlah;
             for(let i=1; i<=4; i++) {
-                const btn = document.getElementById(`btnSet-${i}`);
-                if(i === jumlah) {
-                    btn.classList.add('aktif');
-                } else {
-                    btn.classList.remove('aktif');
-                }
+                document.getElementById(`btnSet-${i}`).classList.toggle('aktif', i === jumlah);
             }
             renderFormDanPreview();
         }
@@ -255,24 +241,18 @@
             for (let i = 1; i <= jumlahKegiatanAktif; i++) {
                 const def = dataDefault[i-1];
 
-                // RENDERING SLOT FORM INPUT DATA
                 const formGroup = document.createElement('div');
                 formGroup.className = "box-kegiatan-input";
                 formGroup.innerHTML = `
                     <div class="text-kegiatan-id">SLOT KEGIATAN #${i}</div>
-                    <div class="grup-field">
-                        <input type="text" id="keg-nama-${i}" placeholder="Nama Kegiatan" value="${def.nama}">
-                    </div>
-                    <div class="grup-field">
-                        <input type="text" id="keg-desc-${i}" placeholder="Deskripsi Singkat (Opsional)" value="${def.desc}">
-                    </div>
-                    <div class="grup-field">
+                    <div class="grup-field"><input type="text" id="keg-nama-${i}" value="${def.nama}"></div>
+                    <div class="grup-field"><input type="text" id="keg-desc-${i}" placeholder="Deskripsi (Opsional)" value="${def.desc}"></div>
+                    <div class="grup-field" style="flex-direction:row; justify-content:space-between; align-items:center;">
                         <input type="file" id="keg-foto-${i}" accept="image/*">
                     </div>
                 `;
                 formContainer.appendChild(formGroup);
 
-                // RENDERING TATA LETAK POSTER (NAMA -> FOTO 4:3 -> DESC)
                 const viewRow = document.createElement('div');
                 viewRow.className = "baris-kegiatan";
                 viewRow.innerHTML = `
@@ -284,72 +264,80 @@
                 `;
                 viewContainer.appendChild(viewRow);
 
-                const inNama = document.getElementById(`keg-nama-${i}`);
-                const inDesc = document.getElementById(`keg-desc-${i}`);
-                const inFoto = document.getElementById(`keg-foto-${i}`);
-                
-                const pvNama = document.getElementById(`pv-nama-${i}`);
-                const pvDesc = document.getElementById(`pv-desc-${i}`);
-                const pvBoxFoto = document.getElementById(`pv-box-foto-${i}`);
-
-                if(!def.desc) pvDesc.style.display = 'none';
-
-                inNama.addEventListener('input', (e) => {
-                    pvNama.innerText = e.target.value.trim() || `Kegiatan ${i}`;
+                // Event Listeners Realtime
+                document.getElementById(`keg-nama-${i}`).addEventListener('input', (e) => {
+                    document.getElementById(`pv-nama-${i}`).innerText = e.target.value.trim() || `Kegiatan ${i}`;
                     dataDefault[i-1].nama = e.target.value;
                 });
 
-                inDesc.addEventListener('input', (e) => {
+                document.getElementById(`keg-desc-${i}`).addEventListener('input', (e) => {
                     const txt = e.target.value.trim();
                     dataDefault[i-1].desc = e.target.value;
-                    if(txt === "") {
-                        pvDesc.style.display = 'none';
-                    } else {
-                        pvDesc.style.display = 'block';
-                        pvDesc.innerText = txt;
-                    }
+                    document.getElementById(`pv-desc-${i}`).style.display = txt === "" ? 'none' : 'block';
+                    document.getElementById(`pv-desc-${i}`).innerText = txt;
                 });
 
-                inFoto.addEventListener('change', function(e) {
+                // Sistem Tangkap Foto untuk di-crop
+                document.getElementById(`keg-foto-${i}`).addEventListener('change', function(e) {
                     const file = e.target.files[0];
                     if(file) {
+                        slotAktifDipotong = i;
                         const reader = new FileReader();
                         reader.onload = function(event) {
-                            pvBoxFoto.innerHTML = `<img src="${event.target.result}">`;
-                            dataDefault[i-1].foto = event.target.result;
+                            imageToCrop.src = event.target.result;
+                            modalCrop.style.display = "flex";
+                            
+                            if(cropperInstance) cropperInstance.destroy();
+                            
+                            // Jalankan mesin pengatur geser foto rasio 4:3 mati
+                            cropperInstance = new Cropper(imageToCrop, {
+                                aspectRatio: 4 / 3,
+                                viewMode: 1,
+                                autoCropArea: 1
+                            });
                         };
                         reader.readAsDataURL(file);
                     }
                 });
                 
                 if(def.foto) {
-                    pvBoxFoto.innerHTML = `<img src="${def.foto}">`;
+                    document.getElementById(`pv-box-foto-${i}`).innerHTML = `<img src="${def.foto}">`;
                 }
             }
         }
 
+        // Aksi Simpan Hasil Potong Foto
+        btnSaveCrop.addEventListener('click', function() {
+            if (cropperInstance && slotAktifDipotong) {
+                // Ambil data gambar yang dipotong dengan resolusi tajam
+                const canvasDipotong = cropperInstance.getCroppedCanvas({ width: 640, height: 480 });
+                const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.9);
+                
+                // Pasang ke memori data & perbarui pratinjau poster harian
+                dataDefault[slotAktifDipotong-1].foto = base64Gambar;
+                document.getElementById(`pv-box-foto-${slotAktifDipotong}`).innerHTML = `<img src="${base64Gambar}">`;
+                
+                // Tutup pop-up window
+                modalCrop.style.display = "none";
+                cropperInstance.destroy();
+                cropperInstance = null;
+            }
+        });
+
         renderFormDanPreview();
 
-        // TOMBOL DOWNLOAD RESOLUSI TINGGI
+        // EKSPOR JPG SANGAT HD
         btnDownload.addEventListener('click', function() {
             const textAwal = btnDownload.innerHTML;
-            btnDownload.innerHTML = "Memproses Gambar...";
+            btnDownload.innerHTML = "Memproses...";
             btnDownload.disabled = true;
 
             html2canvas(templateLaporan, {
-                scale: 2.5, 
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: "#ffffff",
-                logging: false
+                scale: 2.5, useCORS: true, allowTaint: true, backgroundColor: "#ffffff"
             }).then(canvas => {
-                const image = canvas.toDataURL('image/jpeg', 0.95);
                 const link = document.createElement('a');
-                const tglFile = inputTanggal.value || 'laporan';
-                
-                link.download = `laporan-harian-${tglFile}.jpg`;
-                link.href = image;
-                
+                link.download = `laporan-harian-${inputTanggal.value || 'sekolah'}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
