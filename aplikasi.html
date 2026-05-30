@@ -32,11 +32,11 @@
         .title-main { font-size: 16px; font-weight: 700; color: #1e2d24; }
         .subtitle-main { font-size: 11px; color: #687c72; margin-top: 4px; margin-bottom: 16px; }
         .grid-kembar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .grup-field { display: flex; flex-direction: column; gap: 4px; }
+        .grup-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
         .label-style { font-size: 10px; font-weight: 700; color: #687c72; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        input[type="text"], input[type="date"] {
-            width: 100%; padding: 8px 12px; font-size: 13px; background: #f8faf9;
+        input[type="text"], input[type="date"], input[type="email"], input[type="password"] {
+            width: 100%; padding: 10px 12px; font-size: 13px; background: #f8faf9;
             border: 1px solid #d2ded7; border-radius: 10px; outline: none; color: #2c3e35;
         }
         
@@ -57,7 +57,10 @@
         .btn-unduh-jpg {
             width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none;
             border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-logout {
+            background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 8px;
+            font-size: 10px; font-weight: 700; cursor: pointer; float: right; margin-top: -30px;
         }
 
         /* PREVIEW POSTER SAGE PASTEL */
@@ -91,7 +94,7 @@
         .footer-poster { border-top: 1px solid #f0f4f1; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; color: #8fa196; margin-top: 16px; }
         .nama-petugas-bold { font-weight: 700; color: #2c3e35; font-size: 9.5px; }
 
-        /* POP-UP TAMPILAN LOCK SCREEN TOKEN (SAGE STYLE) */
+        /* JENDELA LOCK SCREEN / PORTAL AUTH */
         .lock-screen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: #f4f7f5; display: flex; flex-direction: column;
@@ -105,18 +108,12 @@
         .lock-icon { width: 50px; height: 50px; background: #e8f0ec; color: #709a82; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px; }
         .lock-title { font-size: 18px; font-weight: 700; color: #1e2d24; margin-bottom: 6px; }
         .lock-desc { font-size: 11px; color: #687c72; margin-bottom: 20px; line-height: 1.5; }
-        .btn-aktifkan {
-            width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none;
-            border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px;
-        }
-        .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; }
+        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
+        .link-pindah-view { color: #52796f; font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 16px; }
 
         /* MODAL POP-UP CROPPER */
-        .modal-crop {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(26, 38, 32, 0.8); display: none;
-            align-items: center; justify-content: center; z-index: 9999; padding: 16px;
-        }
+        .modal-crop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26, 38, 32, 0.8); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 16px; }
         .modal-content { background: #ffffff; width: 100%; max-width: 400px; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 14px; }
         .crop-area { width: 100%; max-height: 300px; background: #000; overflow: hidden; border-radius: 8px; }
         .crop-area img { max-width: 100%; display: block; }
@@ -127,24 +124,33 @@
 
     <div id="lockScreen" class="lock-screen">
         <div class="lock-card">
-            <div class="lock-icon">
+            <div class="lock-icon" id="portalIcon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
-            <div class="lock-title">Aktivasi Aplikasi</div>
-            <div id="lockDesc" class="lock-desc">Silakan masukkan token akses bulanan yang valid untuk menggunakan generator laporan premium ini.</div>
+            <h3 class="lock-title" id="portalTitle">Login Premium Member</h3>
+            <p class="lock-desc" id="portalDesc">Silakan masuk menggunakan email terdaftar Anda untuk mengakses fitur pembuat laporan otomatis.</p>
             
             <div class="grup-field" style="text-align: left;">
-                <input type="text" id="tokenInput" placeholder="Masukkan Token Akses" style="text-align: center; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">
-                <div id="errorMsg" class="error-msg">Token salah atau sudah expired!</div>
+                <label class="label-style">Email Guru</label>
+                <input type="email" id="authEmail" placeholder="nama@sekolah.com">
             </div>
-            <button type="button" id="btnAktifkan" class="btn-aktifkan">Verifikasi Akses</button>
+            <div class="grup-field" style="text-align: left; margin-top: 8px;">
+                <label class="label-style">Password</label>
+                <input type="password" id="authPassword" placeholder="******">
+            </div>
+            
+            <div id="errorMsg" class="error-msg">Email atau Password salah!</div>
+            
+            <button type="button" id="btnMainAuth" class="btn-auth">Masuk Aplikasi</button>
+            <div id="btnToggleView" class="link-pindah-view">Belum punya akun? Daftar Baru</div>
         </div>
     </div>
 
     <div class="wrapper">
         <div class="panel-input">
+            <button type="button" id="btnLogout" class="btn-logout">LOGOUT</button>
             <h2 class="title-main">Pembuat Laporan Instan (PRO)</h2>
-            <p class="subtitle-main">Versi Premium Berlangganan — Terbuka.</p>
+            <p class="subtitle-main">Koneksi Database Cloud Google Firebase Aktif.</p>
 
             <div class="grid-kembar">
                 <div class="grup-field">
@@ -160,10 +166,10 @@
             <div class="grup-field">
                 <label class="label-style">Jumlah Kegiatan dalam 1 Halaman</label>
                 <div class="wrapper-slot">
-                    <button type="button" onclick="setJumlahKegiatan(1)" id="btnSet-1" class="btn-pilih-slot aktif">1</button>
-                    <button type="button" onclick="setJumlahKegiatan(2)" id="btnSet-2" class="btn-pilih-slot">2</button>
-                    <button type="button" onclick="setJumlahKegiatan(3)" id="btnSet-3" class="btn-pilih-slot">3</button>
-                    <button type="button" onclick="setJumlahKegiatan(4)" id="btnSet-4" class="btn-pilih-slot">4</button>
+                    <button type="button" id="btnSet-1" class="btn-pilih-slot aktif">1</button>
+                    <button type="button" id="btnSet-2" class="btn-pilih-slot">2</button>
+                    <button type="button" id="btnSet-3" class="btn-pilih-slot">3</button>
+                    <button type="button" id="btnSet-4" class="btn-pilih-slot">4</button>
                 </div>
             </div>
 
@@ -204,48 +210,152 @@
         </div>
     </div>
 
-    <script>
-        // DAFTAR DATABASE TOKEN REKAYASA BULANAN
-        const databaseToken = {
-            "2026-06": "SAGE06", // Token valid sepanjang Juni 2026
-            "2026-07": "SAGE07"  // Token valid sepanjang Juli 2026
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdGS-fH8qV8IOflxs4DYOZ885FjvENtyY",
+            authDomain: "laporan-kegiatan-1bd4a.firebaseapp.com",
+            projectId: "laporan-kegiatan-1bd4a",
+            storageBucket: "laporan-kegiatan-1bd4a.firebasestorage.app",
+            messagingSenderId: "753948706410",
+            appId: "1:753948706410:web:113b7b90d2ee0c16f9ec13",
+            measurementId: "G-JGSXYFBDDE"
         };
 
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const rtdb = getDatabase(app);
+
         const lockScreen = document.getElementById('lockScreen');
-        const tokenInput = document.getElementById('tokenInput');
-        const btnAktifkan = document.getElementById('btnAktifkan');
+        const authEmail = document.getElementById('authEmail');
+        const authPassword = document.getElementById('authPassword');
+        const btnMainAuth = document.getElementById('btnMainAuth');
+        const btnToggleView = document.getElementById('btnToggleView');
+        const btnLogout = document.getElementById('btnLogout');
         const errorMsg = document.getElementById('errorMsg');
-        const lockDesc = document.getElementById('lockDesc');
+        const portalTitle = document.getElementById('portalTitle');
+        const portalDesc = document.getElementById('portalDesc');
 
-        // AMBIL BULAN SEKARANG DI HP USER
-        const waktuSekarang = new Date();
-        const tahunBulanSekarang = waktuSekarang.getFullYear() + "-" + String(waktuSekarang.getMonth() + 1).padStart(2, '0');
-        const tokenSeharusnya = databaseToken[tahunBulanSekarang] || "MASTERKEY";
+        let modePortalSekarang = "login"; // "login" atau "register"
 
-        // Ubah teks panduan sesuai bulan berjalan harian
-        const namaBulanIndo = waktuSekarang.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-        lockDesc.innerText = `Silakan masukkan token akses resmi untuk periode aktif bulan ${namaBulanIndo}.`;
-
-        // CEK STATUS LOGIN SEBELUMNYA (Biar user tidak capek ketik token tiap buka aplikasi)
-        if (localStorage.getItem('statusAktivasiLaporan') === tokenSeharusnya) {
-            lockScreen.style.display = "none";
-        }
-
-        // AKSI TOMBOL VERIFIKASI
-        btnAktifkan.addEventListener('click', function() {
-            const inputUser = tokenInput.value.trim().toUpperCase();
-            
-            if (inputUser === tokenSeharusnya) {
-                // Sukses! Simpan status ke memori browser HP
-                localStorage.setItem('statusAktivasiLaporan', tokenSeharusnya);
-                lockScreen.style.display = "none";
+        // PINDAH MODAL (LOGIN <-> REGISTRASI)
+        btnToggleView.addEventListener('click', () => {
+            errorMsg.style.display = "none";
+            if (modePortalSekarang === "login") {
+                modePortalSekarang = "register";
+                portalTitle.innerText = "Daftar Akun Baru";
+                portalDesc.innerText = "Buat akun laporan Anda menggunakan email aktif harian. Akun baru wajib diaktivasi admin.";
+                btnMainAuth.innerText = "Buat Akun Premium";
+                btnToggleView.innerText = "Sudah punya akun? Login di sini";
             } else {
-                errorMsg.style.display = "block";
-                tokenInput.value = "";
+                modePortalSekarang = "login";
+                portalTitle.innerText = "Login Premium Member";
+                portalDesc.innerText = "Silakan masuk menggunakan email terdaftar Anda untuk mengakses fitur pembuat laporan otomatis.";
+                btnMainAuth.innerText = "Masuk Aplikasi";
+                btnToggleView.innerText = "Belum punya akun? Daftar Baru";
             }
         });
 
-        // --- SISTEM ENGINE CORE APLIKASI ---
+        // MONITOR REALTIME APAKAH USER LOGGED IN DAN EXPIRED?
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const emailKey = user.email.toLowerCase().replace(/\./g, ',');
+                    const userRef = ref(rtdb, 'users/' + emailKey);
+                    const snapshot = await get(userRef);
+
+                    if (snapshot.exists()) {
+                        const dataUser = snapshot.val();
+                        
+                        if (dataUser.status === "pending") {
+                            errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
+                            errorMsg.style.display = "block";
+                            await signOut(auth);
+                            return;
+                        }
+
+                        const tglExpired = new Date(dataUser.expired);
+                        const tglHariIni = new Date();
+
+                        if (dataUser.status === "aktif" && tglHariIni <= tglExpired) {
+                            lockScreen.style.display = "none";
+                        } else {
+                            throw new Error("Expired");
+                        }
+                    } else {
+                        // KONDISI EMERGENCY JIKA STRUKTUR KOSONG, KITA AMANKAN LOCK
+                        errorMsg.innerText = "Sesi akun ditangguhkan. Silakan hubungi admin.";
+                        errorMsg.style.display = "block";
+                        await signOut(auth);
+                    }
+                } catch (e) {
+                    errorMsg.innerText = "Masa aktif akun habis! Hubungi admin untuk perpanjangan.";
+                    errorMsg.style.display = "block";
+                    await signOut(auth);
+                }
+            } else {
+                lockScreen.style.display = "flex";
+            }
+        });
+
+        // PROSES EKSEKUSI TOMBOL UTAMA
+        btnMainAuth.addEventListener('click', () => {
+            errorMsg.style.display = "none";
+            const email = authEmail.value.trim();
+            const password = authPassword.value;
+
+            if (!email || !password) {
+                errorMsg.innerText = "Kolom email dan password wajib diisi!";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (modePortalSekarang === "login") {
+                btnMainAuth.innerText = "Memverifikasi...";
+                signInWithEmailAndPassword(auth, email, password).catch(error => {
+                    btnMainAuth.innerText = "Masuk Aplikasi";
+                    errorMsg.innerText = "Email atau Password salah!";
+                    errorMsg.style.display = "block";
+                });
+            } else {
+                // PROSES PENDAFTARAN USER BARU SECARA MANDIRI
+                btnMainAuth.innerText = "Mendaftarkan Akun...";
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then(async (userCredential) => {
+                        const u = userCredential.user;
+                        const emailKey = u.email.toLowerCase().replace(/\./g, ',');
+                        
+                        // Set data awal ke Realtime Database dengan status 'pending' (Terkunci otomatis)
+                        await set(ref(rtdb, 'users/' + emailKey), {
+                            email: u.email,
+                            status: "pending",
+                            expired: "2026-01-01" // Default tanggal mati agar tidak langsung tembus
+                        });
+
+                        btnMainAuth.innerText = "Buat Akun Premium";
+                        errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
+                        errorMsg.style.display = "block";
+                        
+                        // Paksa logout setelah daftar agar statusnya bersih menunggu approve admin
+                        await signOut(auth);
+                    })
+                    .catch(error => {
+                        btnMainAuth.innerText = "Buat Akun Premium";
+                        errorMsg.innerText = "Gagal mendaftar: " + error.message;
+                        errorMsg.style.display = "block";
+                    });
+            }
+        });
+
+        btnLogout.addEventListener('click', () => {
+            signOut(auth).then(() => { location.reload(); });
+        });
+    </script>
+
+    <script>
         let jumlahKegiatanAktif = 1;
         let cropperInstance = null;
         let slotAktifDipotong = null;
@@ -268,7 +378,7 @@
         const imageToCrop = document.getElementById('imageToCrop');
         const btnSaveCrop = document.getElementById('btnSaveCrop');
 
-        const hariIni = waktuSekarang.toISOString().split('T')[0];
+        const hariIni = new Date().toISOString().split('T')[0];
         inputTanggal.value = hariIni;
         formatDanSetTanggal(hariIni);
 
@@ -279,6 +389,12 @@
             if(!dateString) return;
             const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
             viewTanggal.innerText = new Date(dateString).toLocaleDateString('id-ID', opsi);
+        }
+
+        for(let i=1; i<=4; i++) {
+            document.getElementById(`btnSet-${i}`).addEventListener('click', function() {
+                setJumlahKegiatan(i);
+            });
         }
 
         function setJumlahKegiatan(jumlah) {
