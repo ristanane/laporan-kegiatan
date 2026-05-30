@@ -53,30 +53,23 @@
         .text-kegiatan-id { font-size: 10px; font-weight: 700; color: #4a6b56; }
         input[type="file"] { font-size: 11px; color: #687c72; }
 
-        .btn-unduh-jpg {
-            width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none;
-            border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px;
-        }
-        .btn-logout {
-            background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 8px;
-            font-size: 10px; font-weight: 700; cursor: pointer; float: right; margin-top: -30px;
-        }
+        /* BUTTONS */
+        .btn-unduh-jpg { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 6px; }
+        .btn-reset-form { background: #f4e8e9; color: #c1121f; border: 1px solid #f2d6d8; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; float: right; margin-top: -30px; margin-right: 75px; }
+        .btn-logout { background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; float: right; margin-top: -30px; }
+        
+        .btn-wa-admin { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px; background: #25d366; color: white; border: none; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 14px; text-decoration: none; text-transform: uppercase; }
 
         /* PREVIEW POSTER BASE */
-        #templateLaporan {
-            width: 440px; height: auto; background: #fbf9f6; padding: 24px; border-radius: 4px;
-            box-shadow: 0 8px 24px rgba(44, 62, 53, 0.05); border: 1px solid #e6dfd5;
-            position: relative; display: flex; flex-direction: column; overflow: hidden;
-            transition: background 0.3s;
-        }
-        .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #709a82; transition: background 0.3s; }
+        #templateLaporan { width: 440px; height: auto; background: #fbf9f6; padding: 24px; border-radius: 4px; box-shadow: 0 8px 24px rgba(44, 62, 53, 0.05); border: 1px solid #e6dfd5; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        .top-accent-line { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #709a82; }
         .header-poster { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ebd9c5; padding-bottom: 12px; margin-bottom: 16px; }
         .header-left { display: flex; align-items: center; gap: 10px; }
-        .logo-box-universal { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.3s; }
+        .logo-box-universal { width: 34px; height: 34px; background: #e8f0ec; border: 1px solid #cbdcd3; color: #52796f; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
         .logo-box-universal svg { width: 18px; height: 18px; fill: currentColor; }
         .title-sekolah { font-size: 13px; font-weight: 700; color: #1e2d24; text-transform: uppercase; }
-        .subtitle-sekolah { font-size: 9px; color: #709a82; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.3s; }
-        .badge-tanggal { background: #709a82; color: #ffffff; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; transition: background 0.3s; }
+        .subtitle-sekolah { font-size: 9px; color: #709a82; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .badge-tanggal { background: #709a82; color: #ffffff; font-size: 9px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
 
         /* RESPONSIVE SMART GRID SYSTEM */
         .konten-kegiatan-render { display: flex; flex-direction: column; gap: 16px; }
@@ -86,13 +79,13 @@
         
         .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; background: #ffffff; border: 1px solid #ebd9c5; padding: 10px; border-radius: 12px; box-shadow: 0 2px 6px rgba(112,154,130,0.02); overflow: hidden; transition: all 0.3s; }
 
-        /* SKEMA WARNA 1: COLORFUL PASTEL (DEFAULT) */
+        /* SKEMA TEMA COLORFUL PASTEL */
         #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+1) { background: #f1f8fd; border-color: #d1e9f8; }
         #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+2) { background: #f1f8f3; border-color: #cfebd7; }
         #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+3) { background: #fffcf1; border-color: #fceec5; }
         #templateLaporan.tema-colorful .baris-kegiatan:nth-child(4n+4) { background: #fff4f6; border-color: #fcd4dc; }
 
-        /* SKEMA WARNA 2: FORMAL MONOKROM */
+        /* SKEMA TEMA FORMAL MONOKROM */
         #templateLaporan.tema-formal { background: #ffffff; border-color: #d1d5db; }
         #templateLaporan.tema-formal .top-accent-line { background: #1f2937; }
         #templateLaporan.tema-formal .logo-box-universal { background: #f3f4f6; border-color: #d1d5db; color: #1f2937; }
@@ -102,13 +95,11 @@
         #templateLaporan.tema-formal .baris-kegiatan { background: #f9fafb; border-color: #e5e7eb; }
         #templateLaporan.tema-formal .footer-poster { border-top-color: #e5e7eb; }
 
-        /* PENYESUAIAN UKURAN TEXT KETIKA JADI 3 KOLOM AGAR TETAP MUAT */
         .konten-kegiatan-render.mode-tiga-kolom .render-nama-kegiatan { font-size: 9.5px; }
         .konten-kegiatan-render.mode-tiga-kolom .render-deskripsi-kegiatan { font-size: 8px; }
-
         .konten-kegiatan-render.mode-tunggal .teks-kegiatan-wrapper { display: flex; flex-direction: column; gap: 6px; }
-        .render-nama-kegiatan { font-size: 11px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
         
+        .render-nama-kegiatan { font-size: 11px; font-weight: 700; color: #1e2d24; line-height: 1.35; }
         .render-bingkai-foto { width: 100%; aspect-ratio: 4 / 3; background: #ffffff; border: 1px solid #e6dfd5; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
         .render-bingkai-foto svg { width: 20px; height: 20px; color: #cbd5e1; }
@@ -118,30 +109,23 @@
         .watermark-kecil { font-size: 8px; color: #9ab0a4; font-weight: 500; font-family: monospace; letter-spacing: 0.3px; }
         .nama-petugas-bold { font-weight: 700; color: #1e2d24; font-size: 9.5px; }
 
-        /* JENDELA PORTAL */
-        .lock-screen {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, #f4f7f5 0%, #f5f3ef 100%); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 99999; padding: 20px; transition: all 0.4s ease;
-        }
-        .lock-card {
-            background: #ffffff; width: 100%; max-width: 360px; padding: 30px 24px;
-            border-radius: 24px; border: 1px solid #e2eaf0; text-align: center;
-            box-shadow: 0 10px 30px rgba(112, 154, 130, 0.08); transition: all 0.4s ease;
-        }
-        .lock-icon { width: 50px; height: 50px; background: #e8f0ec; color: #709a82; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px; transition: all 0.4s ease; }
+        /* PORTAL TAMPILAN LOCK SCREEN */
+        .lock-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #f4f7f5 0%, #f5f3ef 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; padding: 20px; transition: all 0.4s ease; }
+        .lock-card { background: #ffffff; width: 100%; max-width: 360px; padding: 30px 24px; border-radius: 24px; border: 1px solid #e2eaf0; text-align: center; box-shadow: 0 10px 30px rgba(112, 154, 130, 0.08); transition: all 0.4s ease; }
+        .lock-icon { width: 50px; height: 50px; background: #e8f0ec; color: #709a82; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 16px; }
         .lock-title { font-size: 18px; font-weight: 700; color: #1e2d24; margin-bottom: 6px; }
         .lock-desc { font-size: 11px; color: #687c72; margin-bottom: 20px; line-height: 1.5; }
-        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.3s; }
+        .btn-auth { width: 100%; padding: 12px; background: #709a82; color: #ffffff; border: none; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .error-msg { color: #c1121f; font-size: 11px; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
-        .link-pindah-view { color: #52796f; font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 16px; }
+        
+        .link-pindah-view { color: #52796f; font-size: 12px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; margin-top: 14px; }
+        .link-lupa-pass { color: #e63946; font-size: 11px; font-weight: 600; cursor: pointer; display: block; margin-top: -4px; margin-bottom: 10px; text-align: right; }
 
         .lock-screen.mode-daftar-style { background: linear-gradient(135deg, #1b2a47 0%, #2e4369 100%); }
         .lock-screen.mode-daftar-style .lock-card { border-color: #34496e; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .lock-screen.mode-daftar-style .lock-icon { background: #e1e9f5; color: #234475; }
         .lock-screen.mode-daftar-style .lock-title { color: #111a2e; }
         .lock-screen.mode-daftar-style .btn-auth { background: #234475; }
-        .lock-screen.mode-daftar-style .link-pindah-view { color: #234475; }
 
         /* MODAL POP-UP CROPPER */
         .modal-crop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26, 38, 32, 0.8); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 16px; }
@@ -174,16 +158,26 @@
                 </button>
             </div>
             
+            <div id="wrapperLupaPass" class="link-lupa-pass">Lupa Password?</div>
+            
             <div id="errorMsg" class="error-msg">Email atau Password salah!</div>
             
             <button type="button" id="btnMainAuth" class="btn-auth">Masuk</button>
             <div id="btnToggleView" class="link-pindah-view">Belum punya akun? Daftar Baru</div>
+            
+            <a id="btnWaAdmin" class="btn-wa-admin" target="_blank" style="display: none;">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.948h.003c4.368 0 7.927-3.558 7.929-7.93a7.828 7.828 0 0 0-2.33-5.54M7.993 14.566c-1.208 0-2.395-.325-3.433-.94l-.245-.145-2.553.669.68-2.486-.158-.251a6.56 6.56 0 0 1-1.005-3.413c0-3.6 2.933-6.525 6.533-6.525a6.53 6.53 0 0 1 4.628 1.914 6.54 6.54 0 0 1 1.912 4.629c-.002 3.61-2.935 6.525-6.535 6.525zM11.59 10.02c-.196-.099-1.162-.574-1.344-.64-.182-.065-.315-.099-.445.099-.133.197-.513.64-.629.775-.114.135-.227.15-.423.05-.197-.1-.832-.307-1.584-.977-.585-.521-.98-1.167-1.096-1.366-.116-.2-.014-.308.085-.407.09-.089.196-.23.295-.346.099-.115.133-.197.198-.329.065-.134.034-.251-.015-.35-.049-.099-.445-1.076-.61-1.472-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.163-.474 1.328-.931.164-.457.164-.849.115-.931-.049-.08-.182-.128-.379-.227z"/></svg>
+                Hubungi Admin WhatsApp
+            </a>
         </div>
     </div>
 
     <div class="wrapper">
         <div class="panel-input">
             <button type="button" id="btnLogout" class="btn-logout">LOGOUT</button>
+            
+            <button type="button" id="btnResetForm" class="btn-reset-form">RESET FORM</button>
+            
             <h2 class="title-main">Laporan Kegiatan Harian</h2>
             <p class="subtitle-main">Koneksi Database Cloud Google Firebase Aktif.</p>
 
@@ -267,7 +261,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
         const firebaseConfig = {
@@ -297,16 +291,38 @@
         const iconLogin = document.getElementById('iconLogin');
         const iconDaftar = document.getElementById('iconDaftar');
         const togglePassword = document.getElementById('togglePassword');
+        const btnWaAdmin = document.getElementById('btnWaAdmin');
+        const wrapperLupaPass = document.getElementById('wrapperLupaPass');
 
         let modePortalSekarang = "login";
+        
+        // SILAKAN GANTI NOMOR WA ANDA DI SINI (Gunakan kode negara 62)
+        const NOMOR_WA_ADMIN = "628970093293"; 
 
         togglePassword.addEventListener('click', () => {
             const tipeSekarang = authPassword.getAttribute('type');
             authPassword.setAttribute('type', tipeSekarang === 'password' ? 'text' : 'password');
         });
 
+        // ACTION BUTTON LUPA PASSWORD OTOMATIS
+        wrapperLupaPass.addEventListener('click', () => {
+            const email = authEmail.value.trim();
+            if(!email) {
+                alert("Silakan ketik Email Anda terlebih dahulu di kolom input untuk mereset password!");
+                return;
+            }
+            if(confirm(`Kirim link reset password ke email: ${email}?`)) {
+                sendPasswordResetEmail(auth, email).then(() => {
+                    alert("Sukses! Link reset password telah dikirim ke email Anda. Silakan cek folder Inbox atau Spam email Anda.");
+                }).catch(err => {
+                    alert("Gagal mengirim email reset: " + err.message);
+                });
+            }
+        });
+
         btnToggleView.addEventListener('click', () => {
             errorMsg.style.display = "none";
+            btnWaAdmin.style.display = "none";
             if (modePortalSekarang === "login") {
                 modePortalSekarang = "register";
                 lockScreen.classList.add('mode-daftar-style');
@@ -314,6 +330,7 @@
                 portalDesc.innerText = "Silakan buat akun baru. Akun baru wajib diaktivasi oleh Admin untuk dapat digunakan.";
                 btnMainAuth.innerText = "Buat Akun";
                 btnToggleView.innerText = "Sudah punya akun? Masuk di sini";
+                wrapperLupaPass.style.display = "none";
                 iconLogin.style.display = "none";
                 iconDaftar.style.display = "block";
             } else {
@@ -323,6 +340,7 @@
                 portalDesc.innerText = "Silakan masuk menggunakan akun terdaftar untuk mengakses laporan kegiatan harian Anda.";
                 btnMainAuth.innerText = "Masuk";
                 btnToggleView.innerText = "Belum punya akun? Daftar Baru";
+                wrapperLupaPass.style.display = "block";
                 iconLogin.style.display = "block";
                 iconDaftar.style.display = "none";
             }
@@ -338,8 +356,13 @@
                     if (snapshot.exists()) {
                         const dataUser = snapshot.val();
                         if (dataUser.status === "pending") {
-                            errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
+                            errorMsg.innerText = "Akun Anda berstatus PENDING. Silakan hubungi Admin untuk aktivasi.";
                             errorMsg.style.display = "block";
+                            
+                            // Tampilkan tombol WA Admin
+                            btnWaAdmin.href = `https://wa.me/${NOMOR_WA_ADMIN}?text=Halo%20Admin,%20saya%20sudah%20daftar%20akun%20laporan%20dengan%20email%20${user.email}.%20Mohon%20bantu%20aktivasi%20ya.`;
+                            btnWaAdmin.style.display = "inline-flex";
+                            
                             await signOut(auth);
                             return;
                         }
@@ -351,13 +374,18 @@
                             throw new Error("Expired");
                         }
                     } else {
-                        errorMsg.innerText = "Sesi akun ditangguhkan. Silakan hubungi admin.";
+                        errorMsg.innerText = "Sesi akun ditangguhkan. Hubungi admin.";
                         errorMsg.style.display = "block";
                         await signOut(auth);
                     }
                 } catch (e) {
-                    errorMsg.innerText = "Masa aktif akun habis! Hubungi admin untuk perpanjangan.";
+                    errorMsg.innerText = "Masa aktif akun habis! Hubungi admin untuk perpanjangan masa aktif.";
                     errorMsg.style.display = "block";
+                    
+                    // Tampilkan tombol WA Admin khusus Expired
+                    btnWaAdmin.href = `https://wa.me/${NOMOR_WA_ADMIN}?text=Halo%20Admin,%20masa%20aktif%20akun%20laporan%20saya%20(${user.email})%20sudah%20habis.%20Saya%20ingin%20perpanjang%20sewa.`;
+                    btnWaAdmin.style.display = "inline-flex";
+                    
                     await signOut(auth);
                 }
             } else {
@@ -367,6 +395,7 @@
 
         btnMainAuth.addEventListener('click', () => {
             errorMsg.style.display = "none";
+            btnWaAdmin.style.display = "none";
             const email = authEmail.value.trim();
             const password = authPassword.value;
 
@@ -395,9 +424,8 @@
                             expired: "2026-01-01"
                         });
                         btnMainAuth.innerText = "Buat Akun";
-                        errorMsg.innerText = "Akun berhasil terdaftar! Silakan hubungi Admin untuk aktivasi masa aktif.";
-                        errorMsg.style.display = "block";
-                        await signOut(auth);
+                        alert("Pendaftaran berhasil! Akun Anda sedang ditinjau. Silakan hubungi Admin.");
+                        location.reload();
                     })
                     .catch(error => {
                         btnMainAuth.innerText = "Buat Akun";
@@ -417,8 +445,7 @@
         let cropperInstance = null;
         let slotAktifDipotong = null;
 
-        // Bank Data Memory Utama
-        let dataDefault = [
+        const dataKosongPabrik = [
             { nama: "Pendampingan Program Kerja", desc: "Melakukan monitoring berkas harian.", foto: "" },
             { nama: "Rapat Koordinasi Tim", desc: "Membahas evaluasi kegiatan bersama.", foto: "" },
             { nama: "Penataan Dokumentasi", desc: "Merapikan arsip laporan fisik.", foto: "" },
@@ -431,6 +458,8 @@
             { nama: "Slot 10", desc: "", foto: "" }
         ];
 
+        let dataDefault = JSON.parse(JSON.stringify(dataKosongPabrik));
+
         const inputInstansi = document.getElementById('inputInstansi');
         const viewInstansi = document.getElementById('viewInstansi');
         const inputTanggal = document.getElementById('inputTanggal');
@@ -440,6 +469,7 @@
         const formContainer = document.getElementById('formKegiatanContainer');
         const viewContainer = document.getElementById('viewKegiatanList');
         const btnDownload = document.getElementById('btnDownload');
+        const btnResetForm = document.getElementById('btnResetForm');
         const modalCrop = document.getElementById('modalCrop');
         const imageToCrop = document.getElementById('imageToCrop');
         const btnSaveCrop = document.getElementById('btnSaveCrop');
@@ -447,7 +477,7 @@
         const selectTemaWarna = document.getElementById('selectTemaWarna');
         const templateLaporan = document.getElementById('templateLaporan');
 
-        // FITUR PRESTISE 1: AUTO LOAD MEMORI DATA DARI LOCAL STORAGE HP USER
+        // FITUR PRESTISE: AUTO LOAD MEMORI DATA DARI LOCAL STORAGE
         if(localStorage.getItem('ristanane_instansi')) inputInstansi.value = localStorage.getItem('ristanane_instansi');
         if(localStorage.getItem('ristanane_petugas')) inputPetugas.value = localStorage.getItem('ristanane_petugas');
         if(localStorage.getItem('ristanane_jumlah')) {
@@ -470,7 +500,6 @@
         viewInstansi.innerText = inputInstansi.value.trim().toUpperCase() || "NAMA INSTANSI";
         viewPetugas.innerText = inputPetugas.value.trim() || "-";
 
-        // EVENT LISTENER FORM UTAMA SINKRONISASI & AUTO-SAVE
         inputInstansi.addEventListener('input', (e) => { 
             const val = e.target.value.trim().toUpperCase();
             viewInstansi.innerText = val || "NAMA INSTANSI"; 
@@ -482,13 +511,8 @@
             localStorage.setItem('ristanane_petugas', e.target.value);
         });
 
-        // FITUR PRESTISE 2: SAKELAR INTEGRASI TEMA WARNA (COLORFUL VS FORMAL MONOKROM)
         selectTemaWarna.addEventListener('change', function(e) {
-            if(e.target.value === "formal") {
-                templateLaporan.className = "tema-formal";
-            } else {
-                templateLaporan.className = "tema-colorful";
-            }
+            templateLaporan.className = e.target.value === "formal" ? "tema-formal" : "tema-colorful";
         });
 
         function formatDanSetTanggal(dateString) {
@@ -503,17 +527,24 @@
             renderFormDanPreview();
         });
 
-        // RE-SAVE TEXT MEMORY UTAMA
         function simpanTeksKeStorage() {
             const ringkasan = dataDefault.map(item => ({ nama: item.nama, desc: item.desc }));
             localStorage.setItem('ristanane_text_cache', JSON.stringify(ringkasan));
         }
 
+        // FITUR BARU: TOMBOL KOSONGKAN RESET FORM
+        btnResetForm.addEventListener('click', function() {
+            if(confirm("Apakah Anda yakin ingin mengosongkan/reset seluruh teks laporan harian ini?")) {
+                localStorage.removeItem('ristanane_text_cache');
+                dataDefault = JSON.parse(JSON.stringify(dataKosongPabrik));
+                renderFormDanPreview();
+            }
+        });
+
         function renderFormDanPreview() {
             formContainer.innerHTML = '';
             viewContainer.innerHTML = '';
 
-            // SMART GRID SYSTEM PENENTU SUSUNAN LAYOUT POSTER
             if (jumlahKegiatanAktif === 1) {
                 viewContainer.className = "konten-kegiatan-render mode-tunggal";
             } else if (jumlahKegiatanAktif >= 2 && jumlahKegiatanAktif <= 6) {
@@ -559,7 +590,6 @@
                 }
                 viewContainer.appendChild(viewRow);
 
-                // EVENT INTERAKSI FORM KE PREVIEW LIVE + MEMORY UPDATE
                 document.getElementById(`keg-nama-${i}`).addEventListener('input', (e) => {
                     document.getElementById(`pv-nama-${i}`).innerText = e.target.value.trim() || `Kegiatan ${i}`;
                     dataDefault[i-1].nama = e.target.value;
@@ -593,12 +623,10 @@
             }
         }
 
-        // FITUR PRESTISE 3: CROPPER + ENGINE COMPRESS BERSIH KAPASITAS (TAJAM TAPI SUPER RINGAN)
         btnSaveCrop.addEventListener('click', function() {
             if (cropperInstance && slotAktifDipotong) {
-                // Dikunci di resolusi 520x390 agar ukuran file terkompresi otomatis, rendering secepat kilat!
                 const canvasDipotong = cropperInstance.getCroppedCanvas({ width: 520, height: 390 });
-                const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.75); // Kualitas set di 75% murni hemat ram HP
+                const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.75);
                 dataDefault[slotAktifDipotong-1].foto = base64Gambar;
                 document.getElementById(`pv-box-foto-${slotAktifDipotong}`).innerHTML = `<img src="${base64Gambar}">`;
                 modalCrop.style.display = "none";
