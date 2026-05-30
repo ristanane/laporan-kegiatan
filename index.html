@@ -27,7 +27,7 @@
 
         .wrapper { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* PANEL INPUT */
+        /* PANEL INPUT DATA */
         .panel-input {
             background: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
@@ -55,12 +55,7 @@
             margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;
         }
         .text-kegiatan-id { font-size: 10px; font-weight: 700; color: #2563eb; }
-        
-        /* Tombol Pemicu Potong */
-        .btn-crop-trigger {
-            padding: 6px 10px; background: #e0f2fe; color: #0369a1; border: none;
-            border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; align-self: flex-start;
-        }
+        input[type="file"] { font-size: 11px; color: #64748b; }
 
         .btn-unduh-jpg {
             width: 100%; padding: 12px; background: #2563eb; color: #ffffff; border: none;
@@ -84,10 +79,21 @@
         .subtitle-sekolah { font-size: 8px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
         .badge-tanggal { background: #f1f5f9; color: #334155; font-size: 9px; font-weight: 600; padding: 4px 8px; border-radius: 20px; }
 
+        /* AREA RENDER UTAMA - OTOMATIS BISA JADI GRID 2 KOLOM */
         .konten-kegiatan-render { display: flex; flex-direction: column; gap: 14px; }
-        .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
-        .baris-kegiatan:last-child { border-bottom: none; padding-bottom: 0; }
-        .render-nama-kegiatan { font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.35; }
+        .konten-kegiatan-render.mode-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px;
+        }
+
+        .baris-kegiatan { display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px; }
+        
+        /* Garis pembatas hanya aktif kalau mode satu kolom (1-2 kegiatan) */
+        .konten-kegiatan-render.mode-list .baris-kegiatan {
+            border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;
+        }
+        .konten-kegiatan-render.mode-list .baris-kegiatan:last-child { border-bottom: none; padding-bottom: 0; }
+        
+        .render-nama-kegiatan { font-size: 11.5px; font-weight: 700; color: #1e293b; line-height: 1.35; }
         
         /* BINGKAI FOTO 4:3 PAS */
         .render-bingkai-foto { 
@@ -96,15 +102,13 @@
             display: flex; align-items: center; justify-content: center; 
         }
         .render-bingkai-foto img { width: 100%; height: 100%; object-fit: cover; }
-        .render-bingkai-foto svg { width: 22px; height: 22px; color: #cbd5e1; }
-        .render-deskripsi-kegiatan { font-size: 10px; color: #64748b; line-height: 1.4; text-align: justify; }
+        .render-bingkai-foto svg { width: 20px; height: 20px; color: #cbd5e1; }
+        .render-deskripsi-kegiatan { font-size: 9.5px; color: #64748b; line-height: 1.4; text-align: justify; }
 
         .footer-poster { border-top: 1px solid #f1f5f9; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; color: #94a3b8; margin-top: 14px; }
         .nama-petugas-bold { font-weight: 700; color: #1e293b; }
 
-        /* ========================================== */
-        /* MODAL POP-UP PEMOTONG GAMBAR (CROPPER)     */
-        /* ========================================== */
+        /* MODAL POP-UP PEMOTONG GAMBAR (CROPPER) */
         .modal-crop {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.8); display: none;
@@ -128,7 +132,7 @@
         
         <div class="panel-input">
             <h2 class="title-main">Pembuat Laporan Instan</h2>
-            <p class="subtitle-main">Isi data di bawah, lalu sesuaikan bagian foto dengan menekan tombol geser.</p>
+            <p class="subtitle-main">Layout otomatis berubah jadi 2 kolom jika memilih 3 atau 4 kegiatan.</p>
 
             <div class="grid-kembar">
                 <div class="grup-field">
@@ -170,7 +174,7 @@
                 <span id="viewTanggal" class="badge-tanggal">30 Mei 2026</span>
             </div>
 
-            <div id="viewKegiatanList" class="konten-kegiatan-render"></div>
+            <div id="viewKegiatanList" class="konten-kegiatan-render mode-list"></div>
 
             <div class="footer-poster">
                 <div>*Digenerate instan via Aplikasi Dokumentasi Sekolah</div>
@@ -238,21 +242,30 @@
             formContainer.innerHTML = '';
             viewContainer.innerHTML = '';
 
+            // LOGIKA FILTER OTOMATIS: 1-2 kegiatan pakai list baris, 3-4 kegiatan pakai grid 2 kolom
+            if (jumlahKegiatanAktif >= 3) {
+                viewContainer.className = "konten-kegiatan-render mode-grid";
+            } else {
+                viewContainer.className = "konten-kegiatan-render mode-list";
+            }
+
             for (let i = 1; i <= jumlahKegiatanAktif; i++) {
                 const def = dataDefault[i-1];
 
+                // RENDERING FORM INPUT DATA
                 const formGroup = document.createElement('div');
                 formGroup.className = "box-kegiatan-input";
                 formGroup.innerHTML = `
                     <div class="text-kegiatan-id">SLOT KEGIATAN #${i}</div>
                     <div class="grup-field"><input type="text" id="keg-nama-${i}" value="${def.nama}"></div>
                     <div class="grup-field"><input type="text" id="keg-desc-${i}" placeholder="Deskripsi (Opsional)" value="${def.desc}"></div>
-                    <div class="grup-field" style="flex-direction:row; justify-content:space-between; align-items:center;">
+                    <div class="grup-field">
                         <input type="file" id="keg-foto-${i}" accept="image/*">
                     </div>
                 `;
                 formContainer.appendChild(formGroup);
 
+                // RENDERING STRUKTUR PREVIEW POSTER (NAMA -> FOTO -> DESC)
                 const viewRow = document.createElement('div');
                 viewRow.className = "baris-kegiatan";
                 viewRow.innerHTML = `
@@ -264,7 +277,7 @@
                 `;
                 viewContainer.appendChild(viewRow);
 
-                // Event Listeners Realtime
+                // Event Listeners Reaktif
                 document.getElementById(`keg-nama-${i}`).addEventListener('input', (e) => {
                     document.getElementById(`pv-nama-${i}`).innerText = e.target.value.trim() || `Kegiatan ${i}`;
                     dataDefault[i-1].nama = e.target.value;
@@ -277,7 +290,7 @@
                     document.getElementById(`pv-desc-${i}`).innerText = txt;
                 });
 
-                // Sistem Tangkap Foto untuk di-crop
+                // File Upload handler + Pemicu Jendela Geser Foto
                 document.getElementById(`keg-foto-${i}`).addEventListener('change', function(e) {
                     const file = e.target.files[0];
                     if(file) {
@@ -289,7 +302,6 @@
                             
                             if(cropperInstance) cropperInstance.destroy();
                             
-                            // Jalankan mesin pengatur geser foto rasio 4:3 mati
                             cropperInstance = new Cropper(imageToCrop, {
                                 aspectRatio: 4 / 3,
                                 viewMode: 1,
@@ -306,18 +318,14 @@
             }
         }
 
-        // Aksi Simpan Hasil Potong Foto
         btnSaveCrop.addEventListener('click', function() {
             if (cropperInstance && slotAktifDipotong) {
-                // Ambil data gambar yang dipotong dengan resolusi tajam
                 const canvasDipotong = cropperInstance.getCroppedCanvas({ width: 640, height: 480 });
                 const base64Gambar = canvasDipotong.toDataURL('image/jpeg', 0.9);
                 
-                // Pasang ke memori data & perbarui pratinjau poster harian
                 dataDefault[slotAktifDipotong-1].foto = base64Gambar;
                 document.getElementById(`pv-box-foto-${slotAktifDipotong}`).innerHTML = `<img src="${base64Gambar}">`;
                 
-                // Tutup pop-up window
                 modalCrop.style.display = "none";
                 cropperInstance.destroy();
                 cropperInstance = null;
@@ -326,10 +334,10 @@
 
         renderFormDanPreview();
 
-        // EKSPOR JPG SANGAT HD
+        // TOMBOL DOWNLOAD JPG HD
         btnDownload.addEventListener('click', function() {
             const textAwal = btnDownload.innerHTML;
-            btnDownload.innerHTML = "Memproses...";
+            btnDownload.innerHTML = "Memproses Gambar...";
             btnDownload.disabled = true;
 
             html2canvas(templateLaporan, {
